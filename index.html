@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="オレオレPop">
-<title>俺のオレンジコート - v69.1 Tuned</title>
+<title>俺のオレンジコート - v69.2 Uncompressed</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -910,7 +910,7 @@
   <div id="ui-config" class="modal" onclick="CloseConfig()">
     <div class="modal-content" style="max-width:400px; text-align:center;" onclick="event.stopPropagation()">
       <h3 style="margin-top:0;">システム設定</h3>
-      <p style="font-size:0.8rem; color:#7f8c8d;">Version 69.1 Tuned</p>
+      <p style="font-size:0.8rem; color:#7f8c8d;">Version 69.2 Uncompressed</p>
       <button class="btn btn-m" onclick="CheckUpdate()">🔄 アップデートを確認</button>
       <button class="btn btn-r" onclick="HardReset()">⚠ データ初期化 (Reset)</button>
       <button class="btn btn-s" onclick="CloseConfig()" style="margin-top:20px;">閉じる</button>
@@ -920,7 +920,7 @@
 
 <script>
 // ==========================================
-// 🎵 Sound Engine (v64.0 + v69.1 Tuned)
+// 🎵 Sound Engine (v69.2 Uncompressed)
 // ==========================================
 const Sound = (function() {
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -936,62 +936,134 @@ const Sound = (function() {
   let currentBgmType = null;
 
   function playEPiano(freq, t, dur) {
-    if(isMuted) return;
+    if (isMuted) return;
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     const pan = ctx.createStereoPanner();
-    osc.type = 'sine'; osc.frequency.value = freq;
-    const lfo = ctx.createOscillator(); lfo.frequency.value = 4;
-    const lfoGain = ctx.createGain(); lfoGain.gain.value = 0.1;
-    lfo.connect(lfoGain); lfoGain.connect(gain.gain); lfo.start(t);
-    gain.gain.setValueAtTime(0, t); gain.gain.linearRampToValueAtTime(0.6, t + 0.02); gain.gain.exponentialRampToValueAtTime(0.01, t + dur * 1.5);
+    
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    
+    const lfo = ctx.createOscillator();
+    lfo.frequency.value = 4;
+    const lfoGain = ctx.createGain();
+    lfoGain.gain.value = 0.1;
+    lfo.connect(lfoGain);
+    lfoGain.connect(gain.gain);
+    lfo.start(t);
+
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(0.6, t + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.01, t + dur * 1.5);
+    
     pan.pan.value = Math.sin(t) * 0.3;
-    osc.connect(gain); gain.connect(pan); pan.connect(masterGain);
-    osc.start(t); osc.stop(t + dur * 2);
+
+    osc.connect(gain);
+    gain.connect(pan);
+    pan.connect(masterGain);
+    
+    osc.start(t);
+    osc.stop(t + dur * 2);
   }
+
   function playGuitar(freq, t, dur) {
-    if(isMuted) return;
-    const osc = ctx.createOscillator(); const filter = ctx.createBiquadFilter(); const gain = ctx.createGain();
-    osc.type = 'sawtooth'; osc.frequency.value = freq;
-    filter.type = 'lowpass'; filter.frequency.setValueAtTime(freq * 4, t); filter.frequency.exponentialRampToValueAtTime(freq, t + 0.1);
-    gain.gain.setValueAtTime(0.4, t); gain.gain.exponentialRampToValueAtTime(0.01, t + dur);
-    osc.connect(filter); filter.connect(gain); gain.connect(masterGain);
-    osc.start(t); osc.stop(t + dur);
+    if (isMuted) return;
+    const osc = ctx.createOscillator();
+    const filter = ctx.createBiquadFilter();
+    const gain = ctx.createGain();
+    
+    osc.type = 'sawtooth';
+    osc.frequency.value = freq;
+    
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(freq * 4, t);
+    filter.frequency.exponentialRampToValueAtTime(freq, t + 0.1);
+
+    gain.gain.setValueAtTime(0.4, t);
+    gain.gain.exponentialRampToValueAtTime(0.01, t + dur);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(masterGain);
+    
+    osc.start(t);
+    osc.stop(t + dur);
   }
+
   function playLead(freq, t, dur) {
-    if(isMuted) return;
-    const osc1 = ctx.createOscillator(); const osc2 = ctx.createOscillator(); const gain = ctx.createGain();
-    osc1.type = 'sawtooth'; osc2.type = 'square';
-    osc1.frequency.value = freq; osc2.frequency.value = freq * 1.003;
-    gain.gain.setValueAtTime(0.3, t); gain.gain.exponentialRampToValueAtTime(0.01, t + dur * 0.9);
-    osc1.connect(gain); osc2.connect(gain); gain.connect(masterGain);
-    osc1.start(t); osc1.stop(t + dur); osc2.start(t); osc2.stop(t + dur);
+    if (isMuted) return;
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
+    const gain = ctx.createGain();
+    
+    osc1.type = 'sawtooth';
+    osc2.type = 'square';
+    
+    osc1.frequency.value = freq;
+    osc2.frequency.value = freq * 1.003;
+    
+    gain.gain.setValueAtTime(0.3, t);
+    gain.gain.exponentialRampToValueAtTime(0.01, t + dur * 0.9);
+
+    osc1.connect(gain);
+    osc2.connect(gain);
+    gain.connect(masterGain);
+    
+    osc1.start(t);
+    osc1.stop(t + dur);
+    osc2.start(t);
+    osc2.stop(t + dur);
   }
+
   function playBass(freq, t, dur) {
-    if(isMuted) return;
-    const osc = ctx.createOscillator(); const gain = ctx.createGain();
-    osc.type = 'square'; osc.frequency.value = freq;
-    gain.gain.setValueAtTime(0.5, t); gain.gain.exponentialRampToValueAtTime(0.01, t + dur);
-    osc.connect(gain); gain.connect(masterGain);
-    osc.start(t); osc.stop(t + dur);
+    if (isMuted) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    
+    osc.type = 'square';
+    osc.frequency.value = freq;
+    
+    gain.gain.setValueAtTime(0.5, t);
+    gain.gain.exponentialRampToValueAtTime(0.01, t + dur);
+
+    osc.connect(gain);
+    gain.connect(masterGain);
+    
+    osc.start(t);
+    osc.stop(t + dur);
   }
+
   function playDrum(type, t) {
-    if(isMuted) return;
-    const osc = ctx.createOscillator(); const gain = ctx.createGain();
-    if (type === 'K') { 
-      osc.frequency.setValueAtTime(150, t); osc.frequency.exponentialRampToValueAtTime(0.01, t + 0.5);
-      gain.gain.setValueAtTime(1, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 0.5);
-      osc.connect(gain); gain.connect(masterGain); osc.start(t); osc.stop(t + 0.5);
-    } else if (type === 'S') { 
-      const buf = ctx.createBuffer(1, ctx.sampleRate*0.1, ctx.sampleRate);
+    if (isMuted) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    
+    if (type === 'K') {
+      osc.frequency.setValueAtTime(150, t);
+      osc.frequency.exponentialRampToValueAtTime(0.01, t + 0.5);
+      gain.gain.setValueAtTime(1, t);
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.5);
+      osc.connect(gain);
+      gain.connect(masterGain);
+      osc.start(t);
+      osc.stop(t + 0.5);
+    } else if (type === 'S') {
+      const buf = ctx.createBuffer(1, ctx.sampleRate * 0.1, ctx.sampleRate);
       const data = buf.getChannelData(0);
-      for(let i=0; i<data.length; i++) data[i] = Math.random()*2-1;
-      const src = ctx.createBufferSource(); src.buffer = buf;
-      gain.gain.setValueAtTime(0.5, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 0.1);
-      src.connect(gain); gain.connect(masterGain); src.start(t);
+      for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      
+      gain.gain.setValueAtTime(0.5, t);
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.1);
+      
+      src.connect(gain);
+      gain.connect(masterGain);
+      src.start(t);
     }
   }
 
+  // Note Data
   const F = { 
     A2:110.0, C3:130.8, D3:146.8, E3:164.8, F3:174.6, G3:196.0, 
     A3:220.0, B3:246.9, C4:261.6, D4:293.7, E4:329.6, F4:349.2, G4:392.0, GS4:415.3, 
@@ -1008,14 +1080,14 @@ const Sound = (function() {
   const Match = {
     tempo: 150, len: 64,
     mel: [F.A4,F.x, F.A4,F.B4, F.C5,F.x, F.A4,F.x, F.E5,F.x, F.D5,F.x, F.C5,F.B4, F.A4,F.G4, F.F4,F.x, F.F4,F.G4, F.A4,F.x, F.F4,F.x, F.C5,F.x, F.B4,F.x, F.A4,F.G4, F.F4,F.E4, F.D4,F.x, F.F4,F.x, F.A4,F.x, F.D5,F.x, F.B4,F.x, F.G4,F.x, F.D4,F.x, F.B3,F.x, F.E4,F.x, F.GS4,F.x, F.B4,F.x, F.E5,F.x, F.A4,F.x, F.x,F.x, F.x,F.x, F.x,F.x],
-    bass: [F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.E3,F.E2, F.E3,F.E2, F.E3,F.E2, F.E3,F.E2, F.A3,F.A2, F.A3,F.A2, F.A3,F.x, F.A3,F.x],
+    bass: [F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.E3,F.E2, F.E3,F.E2, F.E3,F.E2, F.E3,F.E2, F.E3,F.E2, F.A3,F.A2, F.A3,F.A2, F.A3,F.x, F.A3,F.x],
     drm: ['K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K','K','S','S', 'K',0,'S',0],
     arp: []
   };
   const Finals = {
     tempo: 178, len: 64,
     mel: [F.A4,F.x, F.A4,F.B4, F.C5,F.x, F.A4,F.x, F.E5,F.x, F.F5,F.E5, F.D5,F.C5, F.B4,F.G4, F.A4,F.x, F.A4,F.B4, F.C5,F.x, F.E5,F.x, F.F5,F.x, F.E5,F.D5, F.C5,F.B4, F.A4,F.G4, F.F4,F.x, F.A4,F.x, F.D5,F.x, F.A4,F.x, F.G4,F.x, F.B4,F.x, F.D5,F.x, F.G4,F.x, F.E4,F.x, F.GS4,F.x, F.B4,F.x, F.E5,F.x, F.A5,F.x, F.x,F.x, F.A5,F.x, F.x,F.x],
-    bass: [F.A2,F.A2, F.A2,F.A2, F.A2,F.A2, F.A2,F.A2, F.G2,F.G2, F.G2,F.G2, F.G2,F.G2, F.G2,F.G2, F.F2,F.F2, F.F2,F.F2, F.F2,F.F2, F.F2,F.F2, F.E2,F.E2, F.E2,F.E2, F.E2,F.E2, F.E2,F.E2, F.D2,F.D2, F.D2,F.D2, F.D2,F.D2, F.D2,F.D2, F.G2,F.G2, F.G2,F.G2, F.G2,F.G2, F.G2,F.G2, F.E2,F.E2, F.E2,F.E2, F.E2,F.E2, F.E2,F.E2, F.A2,F.A2, F.A2,F.A2, F.A2,F.x, F.A2,F.x],
+    bass: [F.A2,F.A2, F.A2,F.A2, F.A2,F.A2, F.A2,F.A2, F.G2,F.G2, F.G2,F.G2, F.G2,F.G2, F.G2,F.G2, F.F2,F.F2, F.F2,F.F2, F.F2,F.F2, F.F2,F.F2, F.E2,F.E2, F.E2,F.E2, F.E2,F.E2, F.E2,F.E2, F.D2,F.D2, F.D2,F.D2, F.D2,F.D2, F.D2,F.D2, F.G2,F.G2, F.G2,F.G2, F.G2,F.G2, F.G2,F.G2, F.E2,F.E2, F.E2,F.E2, F.E2,F.E2, F.E2,F.E2, F.E2,F.E2, F.A2,F.A2, F.A2,F.A2, F.A2,F.x, F.A2,F.x],
     arp: [F.A3,F.C4, F.E4,F.A4, F.A3,F.C4, F.E4,F.A4, F.A3,F.C4, F.E4,F.A4, F.A3,F.C4, F.E4,F.A4, F.F3,F.A3, F.C4,F.F4, F.F3,F.A3, F.C4,F.F4, F.F3,F.A3, F.C4,F.F4, F.F3,F.A3, F.C4,F.F4, F.D3,F.F3, F.A3,F.D4, F.D3,F.F3, F.A3,F.D4, F.G3,F.B3, F.D4,F.G4, F.G3,F.B3, F.D4,F.G4, F.E3,F.GS3, F.B3,F.E4, F.E3,F.GS3, F.B3,F.E4, F.A3,F.C4, F.E4,F.A4, F.A3,F.C4, F.E4,F.A4],
     drm: ['K',0,'S',0, 'K',0,'S',0, 'K','K','S',0, 'K',0,'S','S', 'K',0,'S',0, 'K',0,'S',0, 'K','K','S',0, 'K',0,'S','S', 'K',0,'S',0, 'K',0,'S',0, 'K','K','S',0, 'K',0,'S','S', 'K',0,'S',0, 'K',0,'S',0, 'K','K','S',0, 'K',0,'S',0]
   };
@@ -1027,55 +1099,92 @@ const Sound = (function() {
     
     const noteLen = 60 / song.tempo / 4; 
     const lookahead = 0.1;
+    
     while (nextTime < ctx.currentTime + lookahead) {
       const i = tick % song.len;
-      if (song.mel && song.mel[i]) { if(currentBgmType === 'daily') playEPiano(song.mel[i], nextTime, noteLen*2); else playLead(song.mel[i], nextTime, noteLen*1.5); }
+      
+      if (song.mel && song.mel[i]) {
+        if (currentBgmType === 'daily') playEPiano(song.mel[i], nextTime, noteLen * 2);
+        else playLead(song.mel[i], nextTime, noteLen * 1.5);
+      }
       if (song.bass && song.bass[i]) playBass(song.bass[i], nextTime, noteLen);
       if (song.arp && song.arp[i]) playGuitar(song.arp[i], nextTime, noteLen);
       if (song.drm && song.drm[i]) playDrum(song.drm[i], nextTime);
-      nextTime += noteLen; tick++;
+      
+      nextTime += noteLen;
+      tick++;
     }
+    
     if (isPlaying) timerID = requestAnimationFrame(scheduler);
   }
 
   function playSE(type) {
-    if(isMuted) return;
-    if(ctx.state === 'suspended') ctx.resume();
+    if (isMuted) return;
+    if (ctx.state === 'suspended') ctx.resume();
     const t = ctx.currentTime;
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.connect(gain); gain.connect(masterGain);
     
     if (type === 'whistle') {
-      osc.type = 'triangle'; osc.frequency.setValueAtTime(2000, t); osc.frequency.linearRampToValueAtTime(1500, t + 0.1);
-      gain.gain.setValueAtTime(0.5, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 0.8);
-      osc.start(t); osc.stop(t + 0.8);
+      osc.type = 'triangle'; 
+      osc.frequency.setValueAtTime(2000, t); 
+      osc.frequency.linearRampToValueAtTime(1500, t + 0.1);
+      gain.gain.setValueAtTime(0.5, t); 
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.8);
+      osc.start(t); 
+      osc.stop(t + 0.8);
     } else if (type === 'spike') {
-      osc.type = 'sawtooth'; osc.frequency.setValueAtTime(300, t); osc.frequency.exponentialRampToValueAtTime(10, t + 0.2);
-      gain.gain.setValueAtTime(0.8, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 0.2);
-      osc.start(t); osc.stop(t + 0.2);
+      osc.type = 'sawtooth'; 
+      osc.frequency.setValueAtTime(300, t); 
+      osc.frequency.exponentialRampToValueAtTime(10, t + 0.2);
+      gain.gain.setValueAtTime(0.8, t); 
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.2);
+      osc.start(t); 
+      osc.stop(t + 0.2);
     } else if (type === 'recv') {
-      osc.type = 'sine'; osc.frequency.setValueAtTime(150, t); osc.frequency.linearRampToValueAtTime(100, t + 0.1);
-      gain.gain.setValueAtTime(0.8, t); gain.gain.exponentialRampToValueAtTime(0.01, t + 0.15);
-      osc.start(t); osc.stop(t + 0.15);
+      osc.type = 'sine'; 
+      osc.frequency.setValueAtTime(150, t); 
+      osc.frequency.linearRampToValueAtTime(100, t + 0.1);
+      gain.gain.setValueAtTime(0.8, t); 
+      gain.gain.exponentialRampToValueAtTime(0.01, t + 0.15);
+      osc.start(t); 
+      osc.stop(t + 0.15);
     }
   }
 
   return {
-    init: function() { if(ctx.state === 'suspended') ctx.resume(); isMuted = false; this.updateBtn(); },
-    toggleMute: function() { isMuted = !isMuted; if(!isMuted && ctx.state === 'suspended') ctx.resume(); this.updateBtn(); },
-    updateBtn: function() { 
-      const btn = document.getElementById('btn-sound');
-      if(btn) { btn.innerText = isMuted ? "🔇" : "🔊"; btn.className = isMuted ? "" : "on"; }
+    init: function() { 
+      if (ctx.state === 'suspended') ctx.resume(); 
+      isMuted = false; 
+      this.updateBtn(); 
     },
-    playBGM: function(type) {
-      if(ctx.state === 'suspended') ctx.resume();
-      if(isPlaying && currentBgmType === type) return; 
+    toggleMute: function() { 
+      isMuted = !isMuted; 
+      if (!isMuted && ctx.state === 'suspended') ctx.resume(); 
+      this.updateBtn(); 
+    },
+    updateBtn: function() { 
+      const b = document.getElementById('btn-sound');
+      if (b) {
+        b.innerText = isMuted ? "🔇" : "🔊";
+        b.className = isMuted ? "" : "on";
+      }
+    },
+    playBGM: function(t) {
+      if (ctx.state === 'suspended') ctx.resume();
+      if (isPlaying && currentBgmType === t) return;
       this.stopBGM();
-      currentBgmType = type; isPlaying = true; tick = 0; nextTime = ctx.currentTime + 0.1;
+      currentBgmType = t;
+      isPlaying = true;
+      tick = 0;
+      nextTime = ctx.currentTime + 0.1;
       scheduler();
     },
-    stopBGM: function() { isPlaying = false; if(timerID) cancelAnimationFrame(timerID); },
+    stopBGM: function() {
+      isPlaying = false;
+      if (timerID) cancelAnimationFrame(timerID);
+    },
     playSE: playSE
   };
 })();
@@ -1098,23 +1207,59 @@ const MENU = [
 ];
 
 const SKILLS = [
-  {id:'muscle',n:'脳筋',t:'p'}, {id:'blockout',n:'ブロックアウト〇',t:'p'}, {id:'feint',n:'フェイント〇',t:'p'}, 
-  {id:'rebound',n:'リバウンド〇',t:'p'}, {id:'trust',n:'圧倒的信頼',t:'p'}, {id:'straight',n:'ストレート打ち',t:'p'}, 
-  {id:'inner',n:'インナー打ち',t:'p'}, {id:'backswing',n:'大きなバックスイング',t:'p'}, {id:'wrist',n:'手首打ち',t:'p'}, 
-  {id:'turn',n:'ターン打ち',t:'p'}, {id:'circular',n:'サーキュラー',t:'p'}, {id:'yakult',n:'ヤクルトジャンパー',t:'n'}, 
-  {id:'fukashi',n:'フカし癖',t:'n'}, {id:'under',n:'下に打ちすぎ',t:'n'},
-  {id:'commit',n:'コミットブロック',t:'p'}, {id:'step',n:'大きな一歩',t:'p'}, {id:'lead',n:'リードブロック',t:'p'}, 
-  {id:'laststand',n:'最後の踏ん張り',t:'p'}, {id:'onetouch',n:'ワンタッチ〇',t:'p'}, {id:'mathoa',n:'ウオール・マソア',t:'p'},
-  {id:'handbad',n:'手の出し方×',t:'n'}, {id:'blkskip',n:'ブロックさぼり癖',t:'n'},
-  {id:'srvrec',n:'サーブレシーブ〇',t:'p'}, {id:'dig',n:'ディグ〇',t:'p'}, {id:'overcut',n:'なんか上がるオーバーカット',t:'p'}, 
-  {id:'readspk',n:'スパイクコース読み〇',t:'p'}, {id:'firststep',n:'素早い一歩目',t:'p'}, {id:'flying',n:'フライングレシーブ',t:'p'}, 
-  {id:'pancake',n:'パンケーキ',t:'p'}, {id:'reflex',n:'光の反射速度',t:'p'}, {id:'libero',n:'小さくて大きな存在',t:'p'}, 
-  {id:'swingarm',n:'腕ふりレシーブ',t:'n'}, {id:'immobile',n:'動かない脚',t:'n'}, {id:'recskip',n:'レシーブさぼり癖',t:'n'},
-  {id:'soft',n:'ふんわりタッチ',t:'p'}, {id:'onehand',n:'ワンハンドトス',t:'p'}, {id:'brain',n:'チームの脳',t:'p'}, 
-  {id:'cover',n:'上にあげればカバーする',t:'p'}, {id:'dump',n:'ツー〇',t:'p'}, {id:'backtoss',n:'バックトス〇',t:'p'},
-  {id:'dribble',n:'ドリブル癖',t:'n'}, {id:'monotone',n:'単調すぎるトス',t:'n'}, {id:'longbad',n:'長めのトス×',t:'n'},
-  {id:'spksrv',n:'スパイクサーブ',t:'p'}, {id:'jmpfloat',n:'ジャンプフローターサーブ',t:'p'}, {id:'float',n:'フローターサーブ',t:'p'}, 
-  {id:'nospin',n:'無回転サーブ',t:'p'}, {id:'netmid',n:'ネット中腹サーブ',t:'n'}, {id:'pressbad',n:'プレッシャー×',t:'n'}, 
+  {id:'muscle',n:'脳筋',t:'p'}, 
+  {id:'blockout',n:'ブロックアウト〇',t:'p'}, 
+  {id:'feint',n:'フェイント〇',t:'p'}, 
+  {id:'rebound',n:'リバウンド〇',t:'p'}, 
+  {id:'trust',n:'圧倒的信頼',t:'p'}, 
+  {id:'straight',n:'ストレート打ち',t:'p'}, 
+  {id:'inner',n:'インナー打ち',t:'p'}, 
+  {id:'backswing',n:'大きなバックスイング',t:'p'}, 
+  {id:'wrist',n:'手首打ち',t:'p'}, 
+  {id:'turn',n:'ターン打ち',t:'p'}, 
+  {id:'circular',n:'サーキュラー',t:'p'}, 
+  {id:'yakult',n:'ヤクルトジャンパー',t:'n'}, 
+  {id:'fukashi',n:'フカし癖',t:'n'}, 
+  {id:'under',n:'下に打ちすぎ',t:'n'},
+  
+  {id:'commit',n:'コミットブロック',t:'p'}, 
+  {id:'step',n:'大きな一歩',t:'p'}, 
+  {id:'lead',n:'リードブロック',t:'p'}, 
+  {id:'laststand',n:'最後の踏ん張り',t:'p'}, 
+  {id:'onetouch',n:'ワンタッチ〇',t:'p'}, 
+  {id:'mathoa',n:'ウオール・マソア',t:'p'},
+  {id:'handbad',n:'手の出し方×',t:'n'}, 
+  {id:'blkskip',n:'ブロックさぼり癖',t:'n'},
+  
+  {id:'srvrec',n:'サーブレシーブ〇',t:'p'}, 
+  {id:'dig',n:'ディグ〇',t:'p'}, 
+  {id:'overcut',n:'なんか上がるオーバーカット',t:'p'}, 
+  {id:'readspk',n:'スパイクコース読み〇',t:'p'}, 
+  {id:'firststep',n:'素早い一歩目',t:'p'}, 
+  {id:'flying',n:'フライングレシーブ',t:'p'}, 
+  {id:'pancake',n:'パンケーキ',t:'p'}, 
+  {id:'reflex',n:'光の反射速度',t:'p'}, 
+  {id:'libero',n:'小さくて大きな存在',t:'p'}, 
+  {id:'swingarm',n:'腕ふりレシーブ',t:'n'}, 
+  {id:'immobile',n:'動かない脚',t:'n'}, 
+  {id:'recskip',n:'レシーブさぼり癖',t:'n'},
+  
+  {id:'soft',n:'ふんわりタッチ',t:'p'}, 
+  {id:'onehand',n:'ワンハンドトス',t:'p'}, 
+  {id:'brain',n:'チームの脳',t:'p'}, 
+  {id:'cover',n:'上にあげればカバーする',t:'p'}, 
+  {id:'dump',n:'ツー〇',t:'p'}, 
+  {id:'backtoss',n:'バックトス〇',t:'p'},
+  {id:'dribble',n:'ドリブル癖',t:'n'}, 
+  {id:'monotone',n:'単調すぎるトス',t:'n'}, 
+  {id:'longbad',n:'長めのトス×',t:'n'},
+  
+  {id:'spksrv',n:'スパイクサーブ',t:'p'}, 
+  {id:'jmpfloat',n:'ジャンプフローターサーブ',t:'p'}, 
+  {id:'float',n:'フローターサーブ',t:'p'}, 
+  {id:'nospin',n:'無回転サーブ',t:'p'}, 
+  {id:'netmid',n:'ネット中腹サーブ',t:'n'}, 
+  {id:'pressbad',n:'プレッシャー×',t:'n'}, 
   {id:'justin',n:'極端な入れサー',t:'n'}
 ];
 
@@ -1154,7 +1299,7 @@ let G = {
 };
 let tempOrder = [];
 
-// Enemy Generator (Hellfire + v69.0 Year Penalty)
+// v66.0: Enemy Generator (Hellfire + v69.0 Year Penalty)
 const E_PRE = ["北","南","東","西","中央","帝","王","龍","桜","白","黒","青","赤","光","闇","星","海","山","川","空","風","雷","火","水","土","金","木"];
 const E_SUF = ["工業","商業","実業","学園","学院","高校","大附属","北","南","東","西","第一","第二","第三"];
 const E_TYPE = [
@@ -1168,6 +1313,7 @@ const E_TYPE = [
 function GenerateEnemy(round, isNat) {
   const name = E_PRE[Math.floor(Math.random()*E_PRE.length)] + E_SUF[Math.floor(Math.random()*E_SUF.length)];
   const type = E_TYPE[Math.floor(Math.random()*E_TYPE.length)];
+  
   // v69.0: Year 1 Scaling
   const yearPenalty = (G.date.y === 1) ? 1.1 : 1.0;
 
@@ -1193,10 +1339,13 @@ function GenerateEnemy(round, isNat) {
 window.onload = function() {
   window.onerror = function(msg) {
     const p = document.getElementById("m-cmd");
-    if(p) { p.innerHTML = `<div style="color:red; grid-column:span 2;">ERR: ${msg}</div>`; document.getElementById("btn-force").style.display = "block"; }
+    if(p) { 
+      p.innerHTML = `<div style="color:red; grid-column:span 2;">ERR: ${msg}</div>`; 
+      document.getElementById("btn-force").style.display = "block"; 
+    }
   };
   try {
-    const save = localStorage.getItem("EIKAN_V69_1_TUNED");
+    const save = localStorage.getItem("EIKAN_V69_2_FULL");
     if (save) {
       const d = JSON.parse(save); 
       d.team.forEach(p => {
@@ -1212,6 +1361,7 @@ window.onload = function() {
       if(!G.scouted) G.scouted = []; 
       if(typeof G.scoutDone === 'undefined') G.scoutDone = false; 
       if(typeof G.match.isMyServe === 'undefined') G.match.isMyServe = false;
+      
       if(d.sIds) G.starters = d.sIds.map(id => G.team.find(p=>p.id===id)||null);
       if(d.lId) G.libero = G.team.find(p=>p.id===d.lId)||null;
       G.match.active = false; ChangeView('v-main'); UpdateUI(); Sound.init(); Sound.playBGM('daily');
@@ -1221,18 +1371,21 @@ window.onload = function() {
 
 function HardReset() { 
   if(confirm("全データを削除して初期化しますか？")) { 
-    localStorage.removeItem("EIKAN_V69_1_TUNED"); location.reload(); 
+    localStorage.removeItem("EIKAN_V69_2_FULL"); 
+    location.reload(); 
   } 
 }
 
 function ShowConfig() { document.getElementById('ui-config').style.display = 'flex'; }
 function CloseConfig() { document.getElementById('ui-config').style.display = 'none'; }
-function CheckUpdate() { alert("現在、最新バージョン(v69.1 Tuned)がインストールされています。\n\nもし動作がおかしい場合は「データ初期化」をお試しください。"); }
+function CheckUpdate() { alert("現在、最新バージョン(v69.2 Uncompressed)がインストールされています。\n\nもし動作がおかしい場合は「データ初期化」をお試しください。"); }
 
 function InitGame() { 
   G.team = []; G.date = { m:4, d:1, y:1 }; G.lv = 1; G.pracMonth = 0; G.scouted = []; G.scoutDone = false;
-  for(let i=0; i<3; i++) G.team.push(MakePlayer(2)); for(let i=0; i<3; i++) G.team.push(MakePlayer(3)); 
-  ChangeView('v-prologue'); RenderScout(); 
+  for(let i=0; i<3; i++) G.team.push(MakePlayer(2)); 
+  for(let i=0; i<3; i++) G.team.push(MakePlayer(3)); 
+  ChangeView('v-prologue'); 
+  RenderScout(); 
 }
 
 function StartGame() { 
@@ -1247,7 +1400,11 @@ function ChangeView(id) {
   if(id!=='v-prologue') document.getElementById('v-prologue').classList.remove('active'); 
 }
 
-function GetRank(v) { if(v>=100) return 'SS'; if(v>=90) return 'S'; if(v>=80) return 'A'; if(v>=70) return 'B'; if(v>=60) return 'C'; if(v>=50) return 'D'; if(v>=40) return 'E'; if(v>=20) return 'F'; return 'G'; }
+function GetRank(v) { 
+  if(v>=100) return 'SS'; if(v>=90) return 'S'; if(v>=80) return 'A'; 
+  if(v>=70) return 'B'; if(v>=60) return 'C'; if(v>=50) return 'D'; 
+  if(v>=40) return 'E'; if(v>=20) return 'F'; return 'G'; 
+}
 
 function MakePlayer(grade) {
   const lvBonus = Math.min(15, Math.floor(G.lv / 5));
@@ -1389,7 +1546,6 @@ function FinishScout() { if(window.scoutSlot > 0) { if(!confirm(`まだ${window.
 
 function PracticeM() { if(G.match.played) return alert("試合終了済みです"); if(G.pracMonth === G.date.m) return alert("練習試合は月1回までです"); if(confirm("練習試合を行いますか？")) { G.pracMonth = G.date.m; StartMatch("練習試合", 1, false); } }
 
-// v69.0: Briefing
 function StartMatch(name, round, isNat) {
   if(!G.starters.every(s=>s)) { AutoOrder(); if(!G.starters.every(s=>s)) return alert("スタメン不足です。"); }
   
@@ -1414,12 +1570,8 @@ function RealStartMatch() {
   document.getElementById('ui-match-brief').style.display = 'none';
   document.getElementById('ui-match').style.display = 'block'; 
   UpdateTOBtn();
-  
   const mInfo = document.getElementById('m-info');
-  const eName = G.match.name === "練習試合" ? "近所の高校" : E_PRE[0]+"高校"; // Name not stored in G.match in old ver, but here we can just use generic if not stored. 
-  // Ideally G.match should store enemyName, but for now we use display logic:
   mInfo.innerHTML = `${G.match.name} ${G.match.isNat?'全国':''} ${G.match.round}回戦<br><span style="color:var(--lose); font-size:1.2em;">総合力:${G.match.pow}</span>`;
-  
   document.getElementById('m-log').innerHTML = ""; document.getElementById('m-end').style.display='none'; document.getElementById('btn-next-rd').style.display='none'; document.getElementById('btn-force').style.display='none';
   
   Sound.playSE('whistle'); 
@@ -1561,7 +1713,7 @@ function Action(id, est) {
     const type = p && p.pos==='MB' ? 'quick' : 'atk';
     Log(`${p?p.name:"味方"}: ${Pick(LOGS[type])}`, "var(--main)", true); 
     Sound.playSE('spike'); 
-    // Effect('shake'); // v69.1: Remove shake on spike
+    // Effect('shake'); // v69.1: Remove shake
     if(p){ p.hist.score++; p.hist.atk++; } Score(true,true);
   } else {
     let rebC = p ? ((p.stats.tec+p.stats.iq)*GetCondVal(p))/200 : 0.3; if(p && HasSkill(p,'rebound')) rebC += 0.1;
@@ -1635,7 +1787,7 @@ function AutoAction() {
   }
 }
 
-function Save() { const d = { team: G.team, date: G.date, lv: G.lv, next: G.match.next, winSpr: G.match.winSpr, played: G.match.played, sIds: G.starters.map(p=>p?p.id:null), lId: G.libero?G.libero.id:null, pracMonth: G.pracMonth, scouted: G.scouted, scoutDone: G.scoutDone, isMyServe: G.match.isMyServe }; localStorage.setItem("EIKAN_V69_1_TUNED", JSON.stringify(d)); }
+function Save() { const d = { team: G.team, date: G.date, lv: G.lv, next: G.match.next, winSpr: G.match.winSpr, played: G.match.played, sIds: G.starters.map(p=>p?p.id:null), lId: G.libero?G.libero.id:null, pracMonth: G.pracMonth, scouted: G.scouted, scoutDone: G.scoutDone, isMyServe: G.match.isMyServe }; localStorage.setItem("EIKAN_V69_2_FULL", JSON.stringify(d)); }
 
 function Log(msg, color, big=false) { 
   const div = document.createElement('div'); div.className = 'l-row' + (big?' log-big':''); 
@@ -1643,15 +1795,14 @@ function Log(msg, color, big=false) {
   const el = document.getElementById('m-log'); el.insertBefore(div, el.firstChild); 
 }
 
-// v69.1 Tuned: Exp Boost & Fix
+// v69.1 Tuned: Exp Boost (1.2 -> 1.8)
 function FinishMatch() { 
   const win = G.match.my > G.match.opp; Log(`試合終了 ${G.match.my}-${G.match.opp}`, win?"gold":"#ccc", true); G.match.played = true; 
   const myP = G.starters.reduce((a,b)=>a+(Object.values(b.stats).reduce((x,y)=>x+y,0)/8),0)/6; 
   if(win) { if(G.lv<100) G.lv++; } else { if(G.match.pow<myP-10) {G.lv=Math.max(1,G.lv-3); Log("格下に敗北...","var(--lose)");} else if(G.match.pow<=myP+10) {G.lv=Math.max(1,G.lv-1);} } 
   
-  // v69.1: Nationals Exp Boost (1.2 -> 1.8)
   let sB = 1.0; 
-  if(G.match.name!=="練習試合") sB = G.match.isNat ? 1.8 : 1.2; 
+  if(G.match.name!=="練習試合") sB = G.match.isNat ? 1.8 : 1.2; // 1.8x for Nationals
   
   const eB = G.match.pow / 50; 
   G.team.forEach(p => { 
@@ -1689,7 +1840,6 @@ function FinishMatch() {
 }
 function EndMatchUI() { document.getElementById('ui-match').style.display='none'; UpdateUI(); Sound.playBGM('daily'); }
 
-// v69.0: Show Stats in Order Selection
 function ShowOrder() { 
   tempOrder = [...G.starters]; 
   const list = document.getElementById('ord-court'); list.innerHTML = ""; const mapIdx = [0, 1, 2, 5, 4, 3]; 

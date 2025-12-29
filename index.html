@@ -5,19 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="オレオレFull">
-<title>俺のオレンジコート - v70.1 Integrity</title>
+<meta name="apple-mobile-web-app-title" content="オレオレPop">
+<title>俺のオレンジコート - v70.2 Reloadable</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
 
 <script>
+  // === アプリアイコン (SVG Data URI) ===
   const ICON_SVG = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%23ff9f43%22 stroke=%22%23333%22 stroke-width=%223%22/><path d=%22M50 3 C50 3 80 20 80 50 C80 80 50 97 50 97 M3 50 C3 50 20 20 50 20 C80 20 97 50 97 50 M3 50 C3 50 20 80 50 80 C80 80 97 50 97 50%22 stroke=%22white%22 stroke-width=%224%22 fill=%22none%22/></svg>`;
-  const link1 = document.createElement('link'); link1.rel = 'icon'; link1.href = ICON_SVG; document.head.appendChild(link1);
-  const link2 = document.createElement('link'); link2.rel = 'apple-touch-icon'; link2.href = ICON_SVG; document.head.appendChild(link2);
-</script>
+  
+  const link1 = document.createElement('link');
+  link1.rel = 'icon';
+  link1.href = ICON_SVG;
+  document.head.appendChild(link1);
 
+  const link2 = document.createElement('link');
+  link2.rel = 'apple-touch-icon';
+  link2.href = ICON_SVG;
+  document.head.appendChild(link2);
+</script>
 <style>
   /* === UI Design: Canva-like Pop Style === */
   :root {
@@ -151,7 +159,7 @@
     color: #fff;
   }
 
-  /* Note Button (Restored) */
+  /* Note Button */
   #btn-note {
     position: absolute;
     top: 45px;
@@ -781,7 +789,7 @@
   }
   #btn-auto:active { transform: translateY(4px); box-shadow: none; }
   
-  /* v70.0: Note Styles */
+  /* v70.0: Skill Note Styles */
   .note-tab { display:flex; gap:5px; margin-bottom:15px; overflow-x:auto; padding-bottom:5px; }
   .tab-btn { flex:1; padding:8px; font-size:0.75rem; border-radius:8px; border:1px solid #ccc; background:#fff; color:var(--text); white-space:nowrap; }
   .tab-btn.active { background:var(--main); color:#fff; border-color:var(--border-color); font-weight:bold; }
@@ -810,7 +818,7 @@
       今日、最後まで戦い抜いた俺たちだ。<br>
       春高へ、行くぞ。<br>
     </div>
-    <div class="p-sub">−これは、ある1人の監督の苦しくて、眩しい物語−</div>
+    <div class="p-sub">−鮮やかな舞台を望む物語−</div>
     <div class="p-title">俺のオレンジコート</div>
     <div class="p-start">TAP TO START</div>
   </div>
@@ -935,7 +943,7 @@
   <div id="ui-config" class="modal" onclick="CloseConfig()">
     <div class="modal-content" style="max-width:400px; text-align:center;" onclick="event.stopPropagation()">
       <h3 style="margin-top:0;">システム設定</h3>
-      <p style="font-size:0.8rem; color:#7f8c8d;">Version 70.1 Integrity</p>
+      <p style="font-size:0.8rem; color:#7f8c8d;">Version 70.2 Reloadable</p>
       <button class="btn btn-m" onclick="CheckUpdate()">🔄 アップデートを確認</button>
       <button class="btn btn-r" onclick="HardReset()">⚠ データ初期化 (Reset)</button>
       <button class="btn btn-s" onclick="CloseConfig()" style="margin-top:20px;">閉じる</button>
@@ -961,7 +969,7 @@
 
 <script>
 // ==========================================
-// 🎵 Sound Engine (v69.2 Uncompressed)
+// 🎵 Sound Engine (v70.2 Full Uncompressed)
 // ==========================================
 const Sound = (function() {
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1304,12 +1312,12 @@ const SKILLS = [
   {id:'justin',n:'極端な入れサー',t:'n', cat:'srv', desc:'威力0。ミス率0%(絶対に入る)'}
 ];
 
-const S_NAMES = ["佐藤","鈴木","高橋","田中","伊藤","渡辺","山本","中村","小林","加藤","吉田","山田","山口","松本","井上","木村","林","清水","山崎","池田","阿部","橋本","山下","森","石川","中島","前田","藤田","小川","後藤","村上","近藤","石井","斉藤","坂本","遠藤","青木","藤井","西村","福田"];
+const S_NAMES = ["佐藤","鈴木","高橋","田中","伊藤","渡辺","山本","中村","小林","加藤","吉田","山田","山口","松本","井上","木村","河本","林","清水","山崎","池田","阿部","橋本","山下","森","石川","中島","前田","藤田","小川","後藤","村上","近藤","石井","斉藤","坂本","遠藤","青木","藤井","西村","福田"];
 const F_NAMES = ["蓮","大翔","悠真","陽翔","湊","一樹","拓海","翔太","健太","翼","陸","奏太","朝陽","英寿","翔平","大和","樹","陽太","颯太","悠人","陸斗","結翔","春馬","優","勇気","誠","龍二","祐介","健司","雅人","智也","和也","達也","隼人","直人","大輝","光","輝","修平","涼太"];
 const LOGS = {
-  atk: ["スパイク炸裂！","ブロックの上から叩いた！","コースギリギリ！","豪快な一撃！","技ありフェイント！"], 
-  quick: ["鮮やかな速攻！","相手を置き去りにした！","Cクイック！","コンビネーション抜群！"], 
-  blk: ["ドシャット！","止めた！","壁となった！","ワンタッチ！"],
+  atk: ["スパイク炸裂！","ブロックの上から叩いた！","コースギリギリ！","豪快な一撃！","チョロ！","技ありフェイント！"], 
+  quick: ["鮮やかな速攻！","相手を置き去りにした！","Aクイック！","Cクイック！","Bクイック！","コンビネーション抜群！"], 
+  blk: ["ドシャット！","止めた！","叩き落された！"],
   ace: ["サービスエース！","ノータッチ！","相手を崩した！"], 
   miss: ["痛恨のミス...","アウト...","ネットにかかった..."], 
   nice_toss: ["絶妙なトス！","セッターの完璧な組み立て！","トスワークでブロックを振った！"], 
@@ -1387,7 +1395,7 @@ window.onload = function() {
     }
   };
   try {
-    const save = localStorage.getItem("EIKAN_V70_1_INTEGRITY");
+    const save = localStorage.getItem("EIKAN_V70_2_RELOAD");
     if (save) {
       const d = JSON.parse(save); 
       d.team.forEach(p => {
@@ -1414,15 +1422,20 @@ window.onload = function() {
 
 function HardReset() { 
   if(confirm("全データを削除して初期化しますか？")) { 
-    localStorage.removeItem("EIKAN_V70_1_INTEGRITY"); 
+    localStorage.removeItem("EIKAN_V70_2_RELOAD"); 
     location.reload(); 
   } 
 }
 
-// v70.1: Restored Note Logic
+// v70.2: Reload Update Check
+function CheckUpdate() {
+  if(confirm("最新のデータを読み込みますか？\n(ページをリロードします)")) {
+    location.reload();
+  }
+}
+
 function ShowConfig() { document.getElementById('ui-config').style.display = 'flex'; }
 function CloseConfig() { document.getElementById('ui-config').style.display = 'none'; }
-function CheckUpdate() { alert("現在、最新バージョン(v70.1 Integrity)がインストールされています。\n\nもし動作がおかしい場合は「データ初期化」をお試しください。"); }
 
 function ShowSkillNote() {
   document.getElementById('ui-skill-note').style.display = 'flex';
@@ -1862,7 +1875,7 @@ function AutoAction() {
   }
 }
 
-function Save() { const d = { team: G.team, date: G.date, lv: G.lv, next: G.match.next, winSpr: G.match.winSpr, played: G.match.played, sIds: G.starters.map(p=>p?p.id:null), lId: G.libero?G.libero.id:null, pracMonth: G.pracMonth, scouted: G.scouted, scoutDone: G.scoutDone, isMyServe: G.match.isMyServe, unlockedSkills: G.unlockedSkills }; localStorage.setItem("EIKAN_V70_1_INTEGRITY", JSON.stringify(d)); }
+function Save() { const d = { team: G.team, date: G.date, lv: G.lv, next: G.match.next, winSpr: G.match.winSpr, played: G.match.played, sIds: G.starters.map(p=>p?p.id:null), lId: G.libero?G.libero.id:null, pracMonth: G.pracMonth, scouted: G.scouted, scoutDone: G.scoutDone, isMyServe: G.match.isMyServe, unlockedSkills: G.unlockedSkills }; localStorage.setItem("EIKAN_V70_2_RELOAD", JSON.stringify(d)); }
 
 function Log(msg, color, big=false) { 
   const div = document.createElement('div'); div.className = 'l-row' + (big?' log-big':''); 

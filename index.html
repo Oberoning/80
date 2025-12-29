@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="オレオレPop">
-<title>俺のオレンジコート - v70.2 Reloadable</title>
+<meta name="apple-mobile-web-app-title" content="オレオレUltimate">
+<title>俺のオレンジコート - v71.0 Ultimate Manual</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -711,6 +711,11 @@
     line-height: 1.6;
   }
   
+  /* v71.0: Help Table Styles */
+  .help-tbl { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 5px; }
+  .help-tbl th { background: #eee; padding: 4px; border: 1px solid #ccc; text-align: center; }
+  .help-tbl td { padding: 4px; border: 1px solid #ccc; }
+  
   details {
     margin-bottom: 12px;
     border: 2px solid #eee;
@@ -818,7 +823,7 @@
       今日、最後まで戦い抜いた俺たちだ。<br>
       春高へ、行くぞ。<br>
     </div>
-    <div class="p-sub">−鮮やかな舞台を望む物語−</div>
+    <div class="p-sub">−これは、ある1人の監督の苦しくて、眩しい物語−</div>
     <div class="p-title">俺のオレンジコート</div>
     <div class="p-start">TAP TO START</div>
   </div>
@@ -924,26 +929,25 @@
   <div id="ui-help" class="modal" onclick="CloseHelp()">
     <div class="modal-content" onclick="event.stopPropagation()">
       <h3 style="text-align:center;color:var(--text);margin-top:0;border-bottom:3px solid var(--border-color);padding-bottom:10px; font-size:1.5rem;">🏐 監督の手引き</h3>
-      <details>
-        <summary>1. 育成とポジション</summary>
-        <p><b>OH</b>: 攻撃の要。パワーと技巧。<br><b>MB</b>: ブロックと速攻。バネとパワー。<br><b>S</b>: 司令塔。思考と技巧。<br><b>L</b>: 守備専門。</p>
-      </details>
-      <details>
-        <summary>2. 試合ルール</summary>
-        <p><b>ローテーション</b>: サイドアウト(サーブ権奪取)時のみ移動。<br><b>リベロ交代</b>: 後衛MBと自動交代。<br><b>流れ</b>: 連続得点で強化。タイムアウトで遮断。</p>
-      </details>
-      <details>
-        <summary>3. スカウト活動</summary>
-        <p>11月開催。評判Lvが高いほど多くの候補・人数を獲得可能。余った枠は一般入部で補充(計8名)。</p>
-      </details>
-      <button class="btn btn-g" onclick="CloseHelp()">理解した</button>
+      
+      <div class="note-tab">
+        <button class="tab-btn active" onclick="SwitchHelpTab('basic', this)">基本</button>
+        <button class="tab-btn" onclick="SwitchHelpTab('pos', this)">ポジション</button>
+        <button class="tab-btn" onclick="SwitchHelpTab('train', this)">育成</button>
+        <button class="tab-btn" onclick="SwitchHelpTab('match', this)">試合</button>
+      </div>
+      
+      <div id="help-content" style="max-height:60vh; overflow-y:auto;">
+         </div>
+
+      <button class="btn btn-g" onclick="CloseHelp()" style="margin-top:15px;">理解した</button>
     </div>
   </div>
 
   <div id="ui-config" class="modal" onclick="CloseConfig()">
     <div class="modal-content" style="max-width:400px; text-align:center;" onclick="event.stopPropagation()">
       <h3 style="margin-top:0;">システム設定</h3>
-      <p style="font-size:0.8rem; color:#7f8c8d;">Version 70.2 Reloadable</p>
+      <p style="font-size:0.8rem; color:#7f8c8d;">Version 71.0 Ultimate Manual</p>
       <button class="btn btn-m" onclick="CheckUpdate()">🔄 アップデートを確認</button>
       <button class="btn btn-r" onclick="HardReset()">⚠ データ初期化 (Reset)</button>
       <button class="btn btn-s" onclick="CloseConfig()" style="margin-top:20px;">閉じる</button>
@@ -1130,7 +1134,7 @@ const Sound = (function() {
     tempo: 150, len: 64,
     mel: [F.A4,F.x, F.A4,F.B4, F.C5,F.x, F.A4,F.x, F.E5,F.x, F.D5,F.x, F.C5,F.B4, F.A4,F.G4, F.F4,F.x, F.F4,F.G4, F.A4,F.x, F.F4,F.x, F.C5,F.x, F.B4,F.x, F.A4,F.G4, F.F4,F.E4, F.D4,F.x, F.F4,F.x, F.A4,F.x, F.D5,F.x, F.B4,F.x, F.G4,F.x, F.D4,F.x, F.B3,F.x, F.E4,F.x, F.GS4,F.x, F.B4,F.x, F.E5,F.x, F.A4,F.x, F.x,F.x, F.x,F.x, F.x,F.x],
     bass: [F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.E3,F.E2, F.E3,F.E2, F.E3,F.E2, F.E3,F.E2, F.E3,F.E2, F.A3,F.A2, F.A3,F.A2, F.A3,F.x, F.A3,F.x],
-    drm: ['K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K','K','S','S', 'K',0,'S',0],
+    drm: ['K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K','K','S','S', 'K',0,'S',0],
     arp: []
   };
   const Finals = {
@@ -1312,12 +1316,12 @@ const SKILLS = [
   {id:'justin',n:'極端な入れサー',t:'n', cat:'srv', desc:'威力0。ミス率0%(絶対に入る)'}
 ];
 
-const S_NAMES = ["佐藤","鈴木","高橋","田中","伊藤","渡辺","山本","中村","小林","加藤","吉田","山田","山口","松本","井上","木村","河本","林","清水","山崎","池田","阿部","橋本","山下","森","石川","中島","前田","藤田","小川","後藤","村上","近藤","石井","斉藤","坂本","遠藤","青木","藤井","西村","福田"];
+const S_NAMES = ["佐藤","鈴木","高橋","田中","伊藤","渡辺","山本","中村","小林","加藤","吉田","山田","山口","松本","井上","木村","林","清水","山崎","池田","阿部","橋本","山下","森","石川","中島","前田","藤田","小川","後藤","村上","近藤","石井","斉藤","坂本","遠藤","青木","藤井","西村","福田"];
 const F_NAMES = ["蓮","大翔","悠真","陽翔","湊","一樹","拓海","翔太","健太","翼","陸","奏太","朝陽","英寿","翔平","大和","樹","陽太","颯太","悠人","陸斗","結翔","春馬","優","勇気","誠","龍二","祐介","健司","雅人","智也","和也","達也","隼人","直人","大輝","光","輝","修平","涼太"];
 const LOGS = {
-  atk: ["スパイク炸裂！","ブロックの上から叩いた！","コースギリギリ！","豪快な一撃！","チョロ！","技ありフェイント！"], 
-  quick: ["鮮やかな速攻！","相手を置き去りにした！","Aクイック！","Cクイック！","Bクイック！","コンビネーション抜群！"], 
-  blk: ["ドシャット！","止めた！","叩き落された！"],
+  atk: ["スパイク炸裂！","ブロックの上から叩いた！","コースギリギリ！","豪快な一撃！","技ありフェイント！"], 
+  quick: ["鮮やかな速攻！","相手を置き去りにした！","Cクイック！","コンビネーション抜群！"], 
+  blk: ["ドシャット！","止めた！","壁となった！","ワンタッチ！"],
   ace: ["サービスエース！","ノータッチ！","相手を崩した！"], 
   miss: ["痛恨のミス...","アウト...","ネットにかかった..."], 
   nice_toss: ["絶妙なトス！","セッターの完璧な組み立て！","トスワークでブロックを振った！"], 
@@ -1395,7 +1399,7 @@ window.onload = function() {
     }
   };
   try {
-    const save = localStorage.getItem("EIKAN_V70_2_RELOAD");
+    const save = localStorage.getItem("EIKAN_V71_0_ULTIMATE");
     if (save) {
       const d = JSON.parse(save); 
       d.team.forEach(p => {
@@ -1422,7 +1426,7 @@ window.onload = function() {
 
 function HardReset() { 
   if(confirm("全データを削除して初期化しますか？")) { 
-    localStorage.removeItem("EIKAN_V70_2_RELOAD"); 
+    localStorage.removeItem("EIKAN_V71_0_ULTIMATE"); 
     location.reload(); 
   } 
 }
@@ -1691,7 +1695,10 @@ function DrawMatch() {
 }
 function ShowDetail(pid) { const p = G.team.find(x => x.id === pid); if(!p) return; const box = document.getElementById('detail-card'); box.innerHTML = ""; RenderCard(p, box, true); document.getElementById('ui-detail').style.display = 'flex'; }
 function CloseDetail() { document.getElementById('ui-detail').style.display = 'none'; }
-function ShowHelp() { document.getElementById('ui-help').style.display = 'flex'; }
+function ShowHelp() { 
+  document.getElementById('ui-help').style.display = 'flex'; 
+  SwitchHelpTab('basic', document.querySelector('#ui-help .tab-btn'));
+}
 function CloseHelp() { document.getElementById('ui-help').style.display = 'none'; }
 
 function TimeOut() {
@@ -1875,7 +1882,7 @@ function AutoAction() {
   }
 }
 
-function Save() { const d = { team: G.team, date: G.date, lv: G.lv, next: G.match.next, winSpr: G.match.winSpr, played: G.match.played, sIds: G.starters.map(p=>p?p.id:null), lId: G.libero?G.libero.id:null, pracMonth: G.pracMonth, scouted: G.scouted, scoutDone: G.scoutDone, isMyServe: G.match.isMyServe, unlockedSkills: G.unlockedSkills }; localStorage.setItem("EIKAN_V70_2_RELOAD", JSON.stringify(d)); }
+function Save() { const d = { team: G.team, date: G.date, lv: G.lv, next: G.match.next, winSpr: G.match.winSpr, played: G.match.played, sIds: G.starters.map(p=>p?p.id:null), lId: G.libero?G.libero.id:null, pracMonth: G.pracMonth, scouted: G.scouted, scoutDone: G.scoutDone, isMyServe: G.match.isMyServe, unlockedSkills: G.unlockedSkills }; localStorage.setItem("EIKAN_V71_0_ULTIMATE", JSON.stringify(d)); }
 
 function Log(msg, color, big=false) { 
   const div = document.createElement('div'); div.className = 'l-row' + (big?' log-big':''); 
@@ -1883,13 +1890,13 @@ function Log(msg, color, big=false) {
   const el = document.getElementById('m-log'); el.insertBefore(div, el.firstChild); 
 }
 
-// v70.0: Unlock Skill on Win
+// v69.1 Tuned: Exp Boost & Fix
 function FinishMatch() { 
   const win = G.match.my > G.match.opp; Log(`試合終了 ${G.match.my}-${G.match.opp}`, win?"gold":"#ccc", true); G.match.played = true; 
   const myP = G.starters.reduce((a,b)=>a+(Object.values(b.stats).reduce((x,y)=>x+y,0)/8),0)/6; 
   if(win) { 
       if(G.lv<100) G.lv++; 
-      // Unlock Logic
+      // Unlock Logic (v70.0)
       const locked = SKILLS.filter(s => !G.unlockedSkills.includes(s.id));
       if (locked.length > 0) {
           const newSk = Pick(locked);
@@ -1966,18 +1973,84 @@ function ShowOrder() {
 function CommitOrder() { G.starters = [...tempOrder]; const lid = document.getElementById('sel-lib').value; G.libero = lid ? G.team.find(p=>p.id===lid) : null; document.getElementById('ui-order').style.display='none'; UpdateUI(); Save(); }
 function CloseOrder() { CommitOrder(); }
 
-function Score(isMy, isAtk) {
-  if(isMy) { 
-    G.match.my++; G.match.flow = Math.max(0, G.match.flow) + 1; Effect('flash'); 
-    if (!G.match.isMyServe) { Rotate(); G.match.isMyServe = true; }
-  } else { 
-    G.match.opp++; G.match.flow = Math.min(0, G.match.flow) - 1; G.match.isMyServe = false; 
+function SwitchHelpTab(cat, btn) {
+  // Tab UI
+  document.querySelectorAll('#ui-help .tab-btn').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  
+  const content = document.getElementById('help-content');
+  let html = "";
+  
+  if (cat === 'basic') {
+    html = `
+      <div style="margin-bottom:10px;">
+        <h4>🏆 ゲームの目的</h4>
+        <p>あなたは高校バレー部の監督です。日々の練習で選手を育て、インターハイと春高バレーでの全国制覇を目指しましょう。</p>
+        <p><b>勝利条件</b>: 全国大会の決勝戦に勝利する。<br><b>敗北条件</b>: 特になし(翌年に続く)。</p>
+      </div>
+      <div style="margin-bottom:10px;">
+        <h4>📅 カレンダーと大会</h4>
+        <p><b>4月</b>: 入学式 (新入生加入)<br><b>5月</b>: インターハイ予選<br><b>8月</b>: 夏合宿 (成長大)<br><b>10月</b>: 春高バレー予選<br><b>11月</b>: スカウト活動 (有望株獲得)<br><b>1月</b>: 新人戦</p>
+      </div>
+      <div style="margin-bottom:10px;">
+        <h4>⭐ 評判Lv (レベル)</h4>
+        <p>試合に勝つと上がります。Lvが高いほど練習効率が上がり、スカウトでより多くの選手を獲得できるようになります。</p>
+      </div>
+    `;
+  } else if (cat === 'pos') {
+    html = `
+      <h4>📍 ポジションと適正</h4>
+      <p>選手には「適正ポジション」があります。適正が低いポジションに就くと、試合中の能力が<b>激減</b>します。</p>
+      <table class="help-tbl">
+        <tr><th>Pos</th><th>役割</th><th>重要ステータス</th></tr>
+        <tr><td><b>OH</b><br>アウトサイド</td><td>攻撃の要。<br>レフト/ライト</td><td><b>パワー・技巧</b><br>ジャンプ</td></tr>
+        <tr><td><b>MB</b><br>ミドル</td><td>守備の壁。<br>速攻・ブロック</td><td><b>バネ・パワー</b><br>思考</td></tr>
+        <tr><td><b>S</b><br>セッター</td><td>司令塔。<br>攻撃を操る</td><td><b>思考・トス</b><br>技巧</td></tr>
+        <tr><td><b>L</b><br>リベロ</td><td>守備専門。<br>後衛のみ</td><td><b>守備・瞬発</b><br>思考</td></tr>
+      </table>
+      <p style="font-size:0.8rem; color:#e67e22;">※適正は練習メニュー「ポジション」で上げることができます。</p>
+    `;
+  } else if (cat === 'train') {
+    html = `
+      <h4>💪 練習と成長</h4>
+      <p>3日ごとに練習メニューを指示します。「おまかせ」や「重点強化」など、選手のタイプに合わせて選びましょう。</p>
+      <ul>
+        <li><b>能力90の壁</b>: 90を超えると成長スピードが鈍化します。</li>
+        <li><b>コンディション</b>: 調子が良い(😁)と試合で能力1.1倍、悪い(😫)と0.8倍になります。</li>
+      </ul>
+      <h4>🔍 スカウト (11月)</h4>
+      <p>来年の新入生を勧誘します。リストの中から欲しい選手を選んでください。<br><b>Lvが高いほど、リストの人数と獲得枠が増えます。</b></p>
+    `;
+  } else if (cat === 'match') {
+    html = `
+      <h4>🏐 試合のルール</h4>
+      <p>25点マッチのバレーボールです。</p>
+      <dl>
+        <dt>サイドアウト制 (ローテーション)</dt>
+        <dd>「相手のサーブ権」の時に得点すると、ローテーション(時計回り)が発生し、サーブ権を得ます。</dd>
+        <dt>リベロ交代</dt>
+        <dd>後衛に回ったMB(ミドルブロッカー)と自動的に交代します。</dd>
+        <dt>流れ (Flow)</dt>
+        <dd>連続得点すると「流れ」に乗り、能力がブーストされます。逆に相手の流れの時は<b>「タイムアウト」</b>を使って断ち切りましょう。</dd>
+      </dl>
+    `;
   }
-  UpdateTOBtn(); DrawMatch();
-  document.getElementById('s-my').innerText = G.match.my; document.getElementById('s-opp').innerText = G.match.opp;
-  if(G.match.my>=25 && G.match.my-G.match.opp>=2) { FinishMatch(); return; }
-  if(G.match.opp>=25 && G.match.opp-G.match.my>=2) { FinishMatch(); return; }
-  if (G.match.isMyServe) { if (isMy) { setTimeout(NextCmd, 800); } else { setTimeout(AutoAction, 800); } } else { setTimeout(AutoAction, 800); }
+  
+  content.innerHTML = html;
+}
+
+function Score(isMy, isAtk) {
+  if(isMy) { 
+    G.match.my++; G.match.flow = Math.max(0, G.match.flow) + 1; Effect('flash'); 
+    if (!G.match.isMyServe) { Rotate(); G.match.isMyServe = true; }
+  } else { 
+    G.match.opp++; G.match.flow = Math.min(0, G.match.flow) - 1; G.match.isMyServe = false; 
+  }
+  UpdateTOBtn(); DrawMatch();
+  document.getElementById('s-my').innerText = G.match.my; document.getElementById('s-opp').innerText = G.match.opp;
+  if(G.match.my>=25 && G.match.my-G.match.opp>=2) { FinishMatch(); return; }
+  if(G.match.opp>=25 && G.match.opp-G.match.my>=2) { FinishMatch(); return; }
+  if (G.match.isMyServe) { if (isMy) { setTimeout(NextCmd, 800); } else { setTimeout(AutoAction, 800); } } else { setTimeout(AutoAction, 800); }
 }
 </script>
 </body>

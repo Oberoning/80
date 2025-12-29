@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="オレオレPop">
-<title>俺のオレンジコート - v68.0 Friendly (Full)</title>
+<title>俺のオレンジコート - v69.1 Tuned</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -105,7 +105,7 @@
   .btn-g { background: var(--ok); }
   .btn-r { background: var(--lose); }
   .btn-y { background: var(--accent); }
-  .btn-s { background: #95a5a6; } /* System Gray */
+  .btn-s { background: #95a5a6; } 
 
   .header {
     background: #fff;
@@ -118,7 +118,6 @@
     position: relative;
   }
   
-  /* 設定ボタン */
   #btn-config {
     position: absolute;
     top: -10px;
@@ -135,6 +134,28 @@
     z-index: 100;
     border: 3px solid var(--border-color);
     box-shadow: 3px 3px 0 var(--border-color);
+  }
+  
+  #btn-sound {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--text);
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    border: 3px solid var(--border-color);
+    box-shadow: 3px 3px 0 var(--border-color);
+  }
+  #btn-sound.on {
+    background: var(--accent);
+    color: #fff;
   }
 
   .cal {
@@ -645,7 +666,30 @@
     to { opacity: 1; }
   }
   
-  /* Details/Summary for Help (v68.0) */
+  .help-sec {
+    margin-bottom: 15px;
+    border-bottom: 2px dashed #eee;
+    padding-bottom: 15px;
+  }
+  
+  .help-sec h4 {
+    margin: 0 0 8px 0;
+    color: var(--text);
+    font-size: 1.1rem;
+    background: var(--win);
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 2px solid var(--border-color);
+  }
+  
+  .help-sec p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  
   details {
     margin-bottom: 12px;
     border: 2px solid #eee;
@@ -703,7 +747,7 @@
   }
   .flash-fx { animation: flash 0.3s; position:fixed; inset:0; z-index:9999; pointer-events:none; }
 
-  .log-big { font-size: 1.2em; font-weight: 900; color: var(--win) !important; text-shadow: 2px 2px 0 #000; margin: 8px 0; }
+  .log-big { font-size: 1.1em; font-weight: 900; color: var(--win) !important; text-shadow: 2px 2px 0 #000; margin: 4px 0; }
   
   .bad-flow { box-shadow: 0 0 20px var(--lose); border-color: var(--lose); animation: pulseBad 1s infinite; }
   .good-flow { box-shadow: 0 0 20px var(--win); border-color: var(--win); animation: pulseGood 1s infinite; }
@@ -712,12 +756,12 @@
   @keyframes pulseBad { 0% { transform: rotate(0deg); } 25% { transform: rotate(-1deg); } 75% { transform: rotate(1deg); } 100% { transform: rotate(0deg); } }
   
   #btn-to {
-    background: #2c3e50; color: #fff; padding: 8px 20px; border-radius: 20px; font-size: 0.9rem; margin-top: 5px; width: auto; display: inline-block; border: 2px solid #fff; box-shadow: 0 4px 0 #000;
+    background: #2c3e50; color: #fff; padding: 6px 15px; border-radius: 20px; font-size: 0.8rem; margin-top: 5px; width: auto; display: inline-block; border: 2px solid #fff; box-shadow: 0 4px 0 #000;
   }
   #btn-to:active { transform: translateY(4px); box-shadow: none; }
   
   #btn-auto {
-    background: #95a5a6; color: #fff; padding: 8px 20px; border-radius: 20px; font-size: 0.9rem; margin-top: 5px; margin-left: 10px; width: auto; display: inline-block; border: 2px solid #fff; box-shadow: 0 4px 0 #000;
+    background: #95a5a6; color: #fff; padding: 6px 15px; border-radius: 20px; font-size: 0.8rem; margin-top: 5px; margin-left: 10px; width: auto; display: inline-block; border: 2px solid #fff; box-shadow: 0 4px 0 #000;
   }
   #btn-auto.active {
     background: var(--win); color: #000; font-weight: 900;
@@ -729,6 +773,7 @@
 <div id="flash-layer"></div>
 <div class="container">
   <button id="btn-config" onclick="ShowConfig()">⚙️</button>
+  <button id="btn-sound" onclick="Sound.toggleMute()" style="right:10px; left:auto;">🔇</button>
 
   <div id="v-prologue" class="view" onclick="StartGame()">
     <div class="prologue-text">
@@ -768,7 +813,7 @@
 
   <div id="v-main" class="view">
     <div class="header">
-      <button id="btn-help" onclick="ShowHelp()" style="position:absolute; top:10px; right:10px; width:40px; height:40px; border-radius:50%; background:#95a5a6; color:#fff; font-weight:bold; border:3px solid var(--border-color); box-shadow:3px 3px 0 var(--border-color); font-size:1.2rem;">?</button>
+      <button id="btn-help" onclick="ShowHelp()" style="position:absolute; top:45px; right:10px; width:40px; height:40px; border-radius:50%; background:#95a5a6; color:#fff; font-weight:bold; border:3px solid var(--border-color); box-shadow:3px 3px 0 var(--border-color); font-size:1.2rem;">?</button>
       <div id="txt-msg" style="color:var(--accent); font-weight:900; min-height:1.2em; font-size:1.2rem; padding-right:40px;"></div>
       <div class="cal">
         <div style="grid-column:span 7; display:flex; justify-content:space-between; font-size:0.9rem; color:#95a5a6; font-weight:bold; margin-bottom:5px;">
@@ -788,20 +833,32 @@
     <div id="list-team"></div>
   </div>
 
+  <div id="ui-match-brief" class="modal">
+    <div class="modal-content" style="max-width:500px; text-align:center;">
+      <h2 style="color:var(--accent); margin-bottom:10px;">MATCH BRIEFING</h2>
+      <div style="background:#f4f6f9; padding:15px; border-radius:12px; margin-bottom:20px; border:2px solid #ccc;">
+        <div id="brief-info" style="font-size:1.2rem; font-weight:bold;"></div>
+        <div id="brief-power" style="margin-top:10px; color:var(--lose); font-weight:900;"></div>
+      </div>
+      <p>試合開始前にスタメンと調子を確認してください。</p>
+      <button class="btn btn-m" onclick="ShowOrder()">📋 スタメン編成 (調子確認)</button>
+      <button class="btn btn-y" onclick="RealStartMatch()">🔥 試合開始 (Kick Off)</button>
+    </div>
+  </div>
+
   <div id="ui-match">
     <div class="m-container">
-      <div id="m-info" style="text-align:center; color:#fff; font-size:1rem; margin-bottom:10px; font-weight:900; text-shadow:2px 2px 0 #000;"></div>
+      <div id="m-info" style="text-align:center; color:#fff; font-size:0.9rem; margin-bottom:5px; font-weight:900; text-shadow:2px 2px 0 #000;"></div>
       <div id="m-court" class="court"></div>
-      <div style="text-align:center;color:#eee;font-size:0.8rem; font-weight:bold;">※選手タップで詳細表示</div>
       <div class="score">
         <span class="sc-my" id="s-my">0</span>-
         <span class="sc-opp" id="s-opp">0</span>
       </div>
-      <div style="text-align:center; margin-bottom:10px;">
+      <div style="text-align:center; margin-bottom:5px;">
          <button id="btn-to" onclick="TimeOut()">✋ タイムアウト (残2)</button>
          <button id="btn-auto" onclick="ToggleAuto()">▶ おまかせ</button>
       </div>
-      <div id="m-state" style="text-align:center; color:#f1c40f; height:1.2em; font-size:1rem; font-weight:900; margin-bottom:5px; text-shadow:1px 1px 0 #000;"></div>
+      <div id="m-state" style="text-align:center; color:#f1c40f; height:1.2em; font-size:0.9rem; font-weight:900; margin-bottom:5px; text-shadow:1px 1px 0 #000;"></div>
       <div id="m-log" class="log"></div>
       <div id="m-cmd" class="cmds"></div>
       <button id="btn-force" class="btn btn-r" style="display:none;" onclick="ForceNext()">⚠ 強制進行</button>
@@ -834,41 +891,18 @@
   <div id="ui-help" class="modal" onclick="CloseHelp()">
     <div class="modal-content" onclick="event.stopPropagation()">
       <h3 style="text-align:center;color:var(--text);margin-top:0;border-bottom:3px solid var(--border-color);padding-bottom:10px; font-size:1.5rem;">🏐 監督の手引き</h3>
-      
       <details>
         <summary>1. 育成とポジション</summary>
-        <p>
-          <b>OH (アウトサイド)</b>: 攻撃の要。パワーと技巧を伸ばすと得点力UP。<br>
-          <b>MB (ミドル)</b>: ブロックと速攻。バネとパワーが重要。<br>
-          <b>S (セッター)</b>: 司令塔。思考と技巧が高いとスパイカーの決定率が上がる。<br>
-          <b>L (リベロ)</b>: 守備専門。後衛のMBと自動交代。レシーブと瞬発を鍛えよう。
-        </p>
-        <p><b>成長の壁</b>: 能力90を超えると伸びにくくなります。</p>
+        <p><b>OH</b>: 攻撃の要。パワーと技巧。<br><b>MB</b>: ブロックと速攻。バネとパワー。<br><b>S</b>: 司令塔。思考と技巧。<br><b>L</b>: 守備専門。</p>
       </details>
-      
       <details>
         <summary>2. 試合ルール</summary>
-        <p>
-          <b>ローテーション</b>: 相手のサーブ権を奪取した時(サイドアウト)のみ、時計回りに移動します。<br>
-          <b>リベロ交代</b>: 後衛のMBと自動で交代します(サーブ権がある時はMBが打ちます)。<br>
-          <b>流れ (Flow)</b>: 連続得点でステータスUP。相手の流れは「タイムアウト」で断ち切りましょう。
-        </p>
+        <p><b>ローテーション</b>: サイドアウト(サーブ権奪取)時のみ移動。<br><b>リベロ交代</b>: 後衛MBと自動交代。<br><b>流れ</b>: 連続得点で強化。タイムアウトで遮断。</p>
       </details>
-      
       <details>
-        <summary>3. スカウト活動 (11月)</summary>
-        <p>
-          評判Lvが高いほど、多くの候補から、多くの人数を獲得できます。<br>
-          <b>★怪物</b>: ごく稀に出現する転生OB級の選手。<br>
-          獲得しなかった枠は、4月の一般入部で埋まります(学年合計8名)。
-        </p>
+        <summary>3. スカウト活動</summary>
+        <p>11月開催。評判Lvが高いほど多くの候補・人数を獲得可能。余った枠は一般入部で補充(計8名)。</p>
       </details>
-      
-      <details>
-        <summary>4. 設定・データ</summary>
-        <p>左上の歯車アイコンから、アップデート確認やデータの初期化が可能です。</p>
-      </details>
-
       <button class="btn btn-g" onclick="CloseHelp()">理解した</button>
     </div>
   </div>
@@ -876,21 +910,17 @@
   <div id="ui-config" class="modal" onclick="CloseConfig()">
     <div class="modal-content" style="max-width:400px; text-align:center;" onclick="event.stopPropagation()">
       <h3 style="margin-top:0;">システム設定</h3>
-      <p style="font-size:0.8rem; color:#7f8c8d;">Version 68.0 Friendly</p>
-      
+      <p style="font-size:0.8rem; color:#7f8c8d;">Version 69.1 Tuned</p>
       <button class="btn btn-m" onclick="CheckUpdate()">🔄 アップデートを確認</button>
-      <button class="btn btn-y" onclick="Sound.toggleMute(); CloseConfig();">🔇 BGM ミュート切替</button>
       <button class="btn btn-r" onclick="HardReset()">⚠ データ初期化 (Reset)</button>
-      
       <button class="btn btn-s" onclick="CloseConfig()" style="margin-top:20px;">閉じる</button>
     </div>
   </div>
-
 </div>
 
 <script>
 // ==========================================
-// 🎵 Sound Engine (v64.0)
+// 🎵 Sound Engine (v64.0 + v69.1 Tuned)
 // ==========================================
 const Sound = (function() {
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -962,7 +992,6 @@ const Sound = (function() {
     }
   }
 
-  // Note Data
   const F = { 
     A2:110.0, C3:130.8, D3:146.8, E3:164.8, F3:174.6, G3:196.0, 
     A3:220.0, B3:246.9, C4:261.6, D4:293.7, E4:329.6, F4:349.2, G4:392.0, GS4:415.3, 
@@ -980,7 +1009,7 @@ const Sound = (function() {
     tempo: 150, len: 64,
     mel: [F.A4,F.x, F.A4,F.B4, F.C5,F.x, F.A4,F.x, F.E5,F.x, F.D5,F.x, F.C5,F.B4, F.A4,F.G4, F.F4,F.x, F.F4,F.G4, F.A4,F.x, F.F4,F.x, F.C5,F.x, F.B4,F.x, F.A4,F.G4, F.F4,F.E4, F.D4,F.x, F.F4,F.x, F.A4,F.x, F.D5,F.x, F.B4,F.x, F.G4,F.x, F.D4,F.x, F.B3,F.x, F.E4,F.x, F.GS4,F.x, F.B4,F.x, F.E5,F.x, F.A4,F.x, F.x,F.x, F.x,F.x, F.x,F.x],
     bass: [F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.A3,F.A2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.F3,F.F2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.G3,F.G2, F.E3,F.E2, F.E3,F.E2, F.E3,F.E2, F.E3,F.E2, F.A3,F.A2, F.A3,F.A2, F.A3,F.x, F.A3,F.x],
-    drm: ['K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K','K','S','S', 'K',0,'S',0],
+    drm: ['K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K',0,'S',0, 'K','K','S','S', 'K',0,'S',0],
     arp: []
   };
   const Finals = {
@@ -1125,7 +1154,7 @@ let G = {
 };
 let tempOrder = [];
 
-// v66.0: Enemy Generator (Hellfire)
+// Enemy Generator (Hellfire + v69.0 Year Penalty)
 const E_PRE = ["北","南","東","西","中央","帝","王","龍","桜","白","黒","青","赤","光","闇","星","海","山","川","空","風","雷","火","水","土","金","木"];
 const E_SUF = ["工業","商業","実業","学園","学院","高校","大附属","北","南","東","西","第一","第二","第三"];
 const E_TYPE = [
@@ -1139,6 +1168,9 @@ const E_TYPE = [
 function GenerateEnemy(round, isNat) {
   const name = E_PRE[Math.floor(Math.random()*E_PRE.length)] + E_SUF[Math.floor(Math.random()*E_SUF.length)];
   const type = E_TYPE[Math.floor(Math.random()*E_TYPE.length)];
+  // v69.0: Year 1 Scaling
+  const yearPenalty = (G.date.y === 1) ? 1.1 : 1.0;
+
   let diffMult = 1.0;
   if(!isNat) {
     if(round <= 2) diffMult = 1.0; 
@@ -1148,32 +1180,29 @@ function GenerateEnemy(round, isNat) {
     if(round <= 4) diffMult = 1.8; 
     else diffMult = 2.0; 
   }
+  
   const myTotal = G.starters.reduce((a,b)=>a+(Object.values(b.stats).reduce((x,y)=>x+y,0)/8),0)/6;
-  const basePow = myTotal * diffMult;
+  const basePow = myTotal * diffMult * yearPenalty;
+  
   const fluctuation = Math.random() < 0.2 ? basePow * 0.2 : (Math.random()*10 - 5);
   const pow = Math.floor(basePow + fluctuation);
+  
   return { name: name, type: type, pow: pow };
 }
 
 window.onload = function() {
   window.onerror = function(msg) {
     const p = document.getElementById("m-cmd");
-    if(p) { 
-      p.innerHTML = `<div style="color:red; grid-column:span 2;">ERR: ${msg}</div>`; 
-      document.getElementById("btn-force").style.display = "block"; 
-    }
+    if(p) { p.innerHTML = `<div style="color:red; grid-column:span 2;">ERR: ${msg}</div>`; document.getElementById("btn-force").style.display = "block"; }
   };
   try {
-    const save = localStorage.getItem("EIKAN_V68_0_FRIENDLY");
+    const save = localStorage.getItem("EIKAN_V69_1_TUNED");
     if (save) {
       const d = JSON.parse(save); 
       d.team.forEach(p => {
         if (typeof p.hNow === 'undefined') { 
-          let hBase = 180 + (Math.random() - 0.5) * 20; 
-          hBase = Math.max(160, Math.min(200, hBase)); 
-          p.hInit = Math.floor(hBase*10)/10; 
-          p.hNow = p.hInit; 
-          p.gType = 1; p.gMax = 5; p.gCur = 0; 
+          let hBase = 180 + (Math.random() - 0.5) * 20; hBase = Math.max(160, Math.min(200, hBase)); 
+          p.hInit = Math.floor(hBase*10)/10; p.hNow = p.hInit; p.gType = 1; p.gMax = 5; p.gCur = 0; 
         }
         if (!Array.isArray(p.skills)) p.skills = [];
         if (typeof p.cond === 'undefined') p.cond = 2;
@@ -1192,28 +1221,18 @@ window.onload = function() {
 
 function HardReset() { 
   if(confirm("全データを削除して初期化しますか？")) { 
-    localStorage.removeItem("EIKAN_V68_0_FRIENDLY"); 
-    location.reload(); 
+    localStorage.removeItem("EIKAN_V69_1_TUNED"); location.reload(); 
   } 
 }
 
-// v68.0 Config Logic
-function ShowConfig() { 
-  document.getElementById('ui-config').style.display = 'flex'; 
-}
-function CloseConfig() { 
-  document.getElementById('ui-config').style.display = 'none'; 
-}
-function CheckUpdate() {
-  alert("現在、最新バージョン(v68.0)がインストールされています。\n\nもし動作がおかしい場合は「データ初期化」をお試しください。");
-}
+function ShowConfig() { document.getElementById('ui-config').style.display = 'flex'; }
+function CloseConfig() { document.getElementById('ui-config').style.display = 'none'; }
+function CheckUpdate() { alert("現在、最新バージョン(v69.1 Tuned)がインストールされています。\n\nもし動作がおかしい場合は「データ初期化」をお試しください。"); }
 
 function InitGame() { 
   G.team = []; G.date = { m:4, d:1, y:1 }; G.lv = 1; G.pracMonth = 0; G.scouted = []; G.scoutDone = false;
-  for(let i=0; i<3; i++) G.team.push(MakePlayer(2)); 
-  for(let i=0; i<3; i++) G.team.push(MakePlayer(3)); 
-  ChangeView('v-prologue'); 
-  RenderScout(); 
+  for(let i=0; i<3; i++) G.team.push(MakePlayer(2)); for(let i=0; i<3; i++) G.team.push(MakePlayer(3)); 
+  ChangeView('v-prologue'); RenderScout(); 
 }
 
 function StartGame() { 
@@ -1228,217 +1247,86 @@ function ChangeView(id) {
   if(id!=='v-prologue') document.getElementById('v-prologue').classList.remove('active'); 
 }
 
-function GetRank(v) { 
-  if(v>=100) return 'SS'; if(v>=90) return 'S'; if(v>=80) return 'A'; 
-  if(v>=70) return 'B'; if(v>=60) return 'C'; if(v>=50) return 'D'; 
-  if(v>=40) return 'E'; if(v>=20) return 'F'; return 'G'; 
-}
+function GetRank(v) { if(v>=100) return 'SS'; if(v>=90) return 'S'; if(v>=80) return 'A'; if(v>=70) return 'B'; if(v>=60) return 'C'; if(v>=50) return 'D'; if(v>=40) return 'E'; if(v>=20) return 'F'; return 'G'; }
 
 function MakePlayer(grade) {
   const lvBonus = Math.min(15, Math.floor(G.lv / 5));
   const isGenius = Math.random() < 0.05; 
   const bonus = isGenius ? 40 : (Math.random() < 0.05 ? 20 : 0);
-  
-  // v68.0 Fix: Restore "才能の塊" string
-  let persName = "";
-  let persMod = 1.0;
-  
-  if (isGenius) {
-      persName = "★怪物";
-      persMod = 1.52;
-  } else if (bonus === 20) {
-      persName = "才能の塊";
-      persMod = 1.52;
-  } else {
+  let persName = ""; let persMod = 1.0;
+  if (isGenius) { persName = "★怪物"; persMod = 1.52; } 
+  else if (bonus === 20) { persName = "才能の塊"; persMod = 1.52; } 
+  else {
       const pList = [{n:"熱血",m:1.18},{n:"冷静",m:1.18},{n:"普通",m:1.06},{n:"陰気",m:0.92}];
       const picked = pList[Math.floor(Math.random()*4)];
-      persName = picked.n;
-      persMod = picked.m;
+      persName = picked.n; persMod = picked.m;
   }
-  
   const stats = {};
   const base = isGenius ? 50 : (15 + (grade-1)*5 + lvBonus); 
-  
-  STATS.forEach(s => { 
-    stats[s.id] = Math.min(100, Math.max(10, Math.floor(base + Math.random()*12 + bonus))); 
-  });
-  
+  STATS.forEach(s => { stats[s.id] = Math.min(100, Math.max(10, Math.floor(base + Math.random()*12 + bonus))); });
   const pos = POS[Math.floor(Math.random()*4)]; 
   const apt = {OH:0, MB:0, S:0, L:0}; apt[pos] = 100;
-  
-  let hBase = 180 + (Math.random() + Math.random() + Math.random() - 1.5) * 20; 
-  hBase = Math.max(160, Math.min(200, hBase));
+  let hBase = 180 + (Math.random() + Math.random() + Math.random() - 1.5) * 20; hBase = Math.max(160, Math.min(200, hBase));
   if(isGenius) hBase += 10; 
-  
-  const hInit = Math.floor(hBase * 10) / 10; 
-  const hNow = hInit;
-  
-  const skills = []; 
-  SKILLS.forEach(sk => { 
-    if(Math.random() < (isGenius?0.2:0.05)) skills.push(sk.id); 
-  });
-  
-  const gType = 1; 
-  let gMax = 5; 
-  if(Math.random()<0.02) {gMax=10;}
-  
-  return { 
-    id: "p"+Date.now()+Math.random(), 
-    name: S_NAMES[Math.floor(Math.random()*S_NAMES.length)] + " " + F_NAMES[Math.floor(Math.random()*F_NAMES.length)], 
-    grade: grade, 
-    pos: pos, 
-    stats: stats, 
-    apt: apt, 
-    pers: {n: persName, m: persMod}, 
-    menu: null, 
-    hist: { score:0, atk:0 }, 
-    hInit: hInit, hNow: hNow, gType: gType, gMax: gMax, gCur: 0, cond: 2, skills: skills 
-  };
+  const hInit = Math.floor(hBase * 10) / 10; const hNow = hInit;
+  const skills = []; SKILLS.forEach(sk => { if(Math.random() < (isGenius?0.2:0.05)) skills.push(sk.id); });
+  const gType = 1; let gMax = 5; if(Math.random()<0.02) {gMax=10;}
+  return { id: "p"+Date.now()+Math.random(), name: S_NAMES[Math.floor(Math.random()*S_NAMES.length)] + " " + F_NAMES[Math.floor(Math.random()*F_NAMES.length)], grade: grade, pos: pos, stats: stats, apt: apt, pers: {n: persName, m: persMod}, menu: null, hist: { score:0, atk:0 }, hInit: hInit, hNow: hNow, gType: gType, gMax: gMax, gCur: 0, cond: 2, skills: skills };
 }
 
 function RenderScout() { 
-  const el = document.getElementById('list-scout'); el.innerHTML = ""; 
-  document.getElementById('cnt-mem').innerText = G.team.length; 
+  const el = document.getElementById('list-scout'); el.innerHTML = ""; document.getElementById('cnt-mem').innerText = G.team.length; 
   window.tmpScouts = []; 
-  
-  if(G.scouted && G.scouted.length > 0) { 
-    G.scouted.forEach(p => { 
-      p.grade = 1; 
-      window.tmpScouts.push(p); 
-    }); 
-    G.scouted = []; 
-  }
-  
+  if(G.scouted && G.scouted.length > 0) { G.scouted.forEach(p => { p.grade = 1; window.tmpScouts.push(p); }); G.scouted = []; }
   const needed = Math.max(0, 8 - window.tmpScouts.length);
   for(let i=0; i<needed; i++) window.tmpScouts.push(MakePlayer(1));
-  
   window.tmpScouts.forEach(p => RenderCard(p, el, true)); 
 }
-
-function CommitEnlist() { 
-  window.tmpScouts.forEach(p => p.menu = 'spike'); 
-  G.team = G.team.concat(window.tmpScouts); 
-  window.tmpScouts = null; 
-  AutoOrder(); 
-  ChangeView('v-main'); 
-  UpdateUI(); 
-  Save(); 
-}
+function CommitEnlist() { window.tmpScouts.forEach(p => p.menu = 'spike'); G.team = G.team.concat(window.tmpScouts); window.tmpScouts = null; AutoOrder(); ChangeView('v-main'); UpdateUI(); Save(); }
 
 function AutoOrder() { 
   const list = [...G.team].sort((a,b) => Object.values(b.stats).reduce((s,v)=>s+v,0) - Object.values(a.stats).reduce((s,v)=>s+v,0)); 
   let l = list.find(p=>p.pos==='L') || null; 
   G.libero = l; 
-  
   const others = list.filter(p => p.pos !== 'L'); 
   let s = others.find(p=>p.pos==='S') || others[0]; 
   const atks = others.filter(p=>p.id!==s.id); 
-  
   G.starters = [atks[0]||null, atks[1]||null, atks[2]||null, s||null, atks[3]||null, atks[4]||null]; 
 }
 
 function RenderCard(p, parent, simple=false) {
-  const div = document.createElement('div'); 
-  div.className = 'card'; 
-  div.setAttribute('data-pos', p.pos);
-  
-  const isS = G.starters.some(s => s && s.id === p.id); 
-  const isL = G.libero && G.libero.id === p.id;
+  const div = document.createElement('div'); div.className = 'card'; div.setAttribute('data-pos', p.pos);
+  const isS = G.starters.some(s => s && s.id === p.id); const isL = G.libero && G.libero.id === p.id;
   const badge = isS ? `<span class="badge st">スタメン</span>` : (isL ? `<span class="badge li">L</span>` : "");
-  
   const total = Math.floor(Object.values(p.stats).reduce((a,b)=>a+b,0));
   const m = MENU.find(x=>x.id===p.menu);
-  
-  const hNowVal = (p.hNow || 170); 
-  const hInitVal = (p.hInit || 170); 
-  const grown = (hNowVal - hInitVal).toFixed(1);
-  const score = p.hist && p.hist.score ? p.hist.score : 0; 
-  const atkCnt = p.hist && p.hist.atk ? p.hist.atk : 0; 
-  const rate = atkCnt > 0 ? Math.floor((score / atkCnt) * 100) : 0;
+  const hNowVal = (p.hNow || 170); const hInitVal = (p.hInit || 170); const grown = (hNowVal - hInitVal).toFixed(1);
+  const score = p.hist && p.hist.score ? p.hist.score : 0; const atkCnt = p.hist && p.hist.atk ? p.hist.atk : 0; const rate = atkCnt > 0 ? Math.floor((score / atkCnt) * 100) : 0;
 
   let html = `
-    <div class="c-head">
-      <div class="c-name">${p.name} <span style="font-size:0.8em; font-weight:normal;">(${p.pos})</span> ${COND[p.cond].n}</div>
-      <div class="c-ovr">★${total}</div>
-    </div>
-    <div class="c-meta">
-      <span>${p.grade}年</span>
-      <span>${p.pers.n}</span>
-      <span>${hNowVal.toFixed(1)}cm <small style="color:#aaa;">(+${grown})</small></span>
-      <span style="color:var(--main);font-weight:bold;margin-left:4px;">${score}点 ${rate}%</span>
-      ${badge}
-    </div>
-    <div class="stats">
-      ${STATS.map(s => { 
-        const v = Math.floor(p.stats[s.id]); 
-        let arr = ""; 
-        if(!simple && m && m.s.includes(s.id)) { 
-          if(m.s.length===1) arr = ` <span class="up-3">↑↑↑</span>`; 
-          else if(m.s.length<=3) arr = ` <span class="up-2">↑↑</span>`; 
-          else arr = ` <span class="up-1">↑</span>`; 
-        } 
-        return `<div class="s-row"><span>${s.n}${arr}</span><span><span class="rnk r-${GetRank(v)}">${GetRank(v)}</span>${v}</span></div>`; 
-      }).join('')}
-    </div>
-    
-    <div class="c-apt">
-      ${POS.map(po => `<span class="apt-item">${po}:<span class="apt-val ${p.apt[po]>=80?'high':''}">${Math.floor(p.apt[po])}%</span></span>`).join('')}
-    </div>
-
-    <div class="c-skills">
-      ${(p.skills||[]).map(sid => { 
-        const sk = SKILLS.find(k=>k.id===sid); 
-        return sk ? `<span class="sk-tag sk-${sk.t}">${sk.n}</span>` : ''; 
-      }).join('')}
-    </div>
+    <div class="c-head"><div class="c-name">${p.name} <span style="font-size:0.8em; font-weight:normal;">(${p.pos})</span> ${COND[p.cond].n}</div><div class="c-ovr">★${total}</div></div>
+    <div class="c-meta"><span>${p.grade}年</span><span>${p.pers.n}</span><span>${hNowVal.toFixed(1)}cm <small style="color:#aaa;">(+${grown})</small></span><span style="color:var(--main);font-weight:bold;margin-left:4px;">${score}点 ${rate}%</span>${badge}</div>
+    <div class="stats">${STATS.map(s => { const v = Math.floor(p.stats[s.id]); let arr = ""; if(!simple && m && m.s.includes(s.id)) { if(m.s.length===1) arr = ` <span class="up-3">↑↑↑</span>`; else if(m.s.length<=3) arr = ` <span class="up-2">↑↑</span>`; else arr = ` <span class="up-1">↑</span>`; } return `<div class="s-row"><span>${s.n}${arr}</span><span><span class="rnk r-${GetRank(v)}">${GetRank(v)}</span>${v}</span></div>`; }).join('')}</div>
+    <div class="c-apt">${POS.map(po => `<span class="apt-item">${po}:<span class="apt-val ${p.apt[po]>=80?'high':''}">${Math.floor(p.apt[po])}%</span></span>`).join('')}</div>
+    <div class="c-skills">${(p.skills||[]).map(sid => { const sk = SKILLS.find(k=>k.id===sid); return sk ? `<span class="sk-tag sk-${sk.t}">${sk.n}</span>` : ''; }).join('')}</div>
   `;
   if(!simple) { 
-    html += `
-      <div class="c-btm">
-        ${MENU.map(mn => `<div onclick="SetM('${p.id}','${mn.id}')" class="c-menu-btn ${p.menu===mn.id?'active':''}">${mn.n}</div>`).join('')}
-      </div>
-      <div class="c-btm" style="grid-template-columns:repeat(4,1fr);">
-        ${POS.map(po => `<div onclick="SetP('${p.id}','${po}')" class="c-pos-btn ${p.pos===po?'active':''}">${po}</div>`).join('')}
-      </div>
-    `; 
+    html += `<div class="c-btm">${MENU.map(mn => `<div onclick="SetM('${p.id}','${mn.id}')" class="c-menu-btn ${p.menu===mn.id?'active':''}">${mn.n}</div>`).join('')}</div>
+      <div class="c-btm" style="grid-template-columns:repeat(4,1fr);">${POS.map(po => `<div onclick="SetP('${p.id}','${po}')" class="c-pos-btn ${p.pos===po?'active':''}">${po}</div>`).join('')}</div>`; 
   }
   div.innerHTML = html; parent.appendChild(div);
 }
-
 function SetM(id, m) { G.team.find(p=>p.id===id).menu = m; UpdateUI(); Save(); }
 function SetP(id, po) { G.team.find(p=>p.id===id).pos = po; UpdateUI(); Save(); }
 
 function RenderScoutCard(p, parent) {
-  const div = document.createElement('div'); 
-  div.className = 'card'; 
-  div.setAttribute('data-pos', p.pos); 
-  div.id = `sc-${p.id}`;
-  
+  const div = document.createElement('div'); div.className = 'card'; div.setAttribute('data-pos', p.pos); div.id = `sc-${p.id}`;
   let html = `
-    <div class="c-head">
-      <div class="c-name">${p.name} <span style="font-size:0.8em; font-weight:normal;">(${p.pos})</span></div>
-      <div class="c-ovr">評価: ${GetRank(Object.values(p.stats).reduce((a,b)=>a+b,0)/8 + (Math.random()*10-5))}</div>
-    </div>
-    <div class="c-meta">
-      <span>中学3年生</span>
-      <span>${p.pers.n}</span>
-      <span>${(p.hInit + (Math.random()*2-1)).toFixed(1)}cm?</span>
-    </div>
-    <div class="stats">
-      ${STATS.map(s => { 
-        const fuzz = p.stats[s.id] + (Math.random() * 10 - 5);
-        return `<div class="s-row"><span>${s.n}</span><span class="rnk r-${GetRank(fuzz)}">${GetRank(fuzz)}</span></div>`; 
-      }).join('')}
-    </div>
-    <div class="c-apt">
-      ${POS.map(po => `<span class="apt-item">${po}:<span class="apt-val ${p.apt[po]>=80?'high':''}">${p.apt[po]>=80?'A':'C'}</span></span>`).join('')}
-    </div>
-    <div class="c-skills">
-      ${(p.skills||[]).map(sid => { 
-        const sk = SKILLS.find(k=>k.id===sid); 
-        return sk ? `<span class="sk-tag sk-${sk.t}">${sk.n}</span>` : ''; 
-      }).join('')}
-    </div>
+    <div class="c-head"><div class="c-name">${p.name} <span style="font-size:0.8em; font-weight:normal;">(${p.pos})</span></div><div class="c-ovr">評価: ${GetRank(Object.values(p.stats).reduce((a,b)=>a+b,0)/8 + (Math.random()*10-5))}</div></div>
+    <div class="c-meta"><span>中学3年生</span><span>${p.pers.n}</span><span>${(p.hInit + (Math.random()*2-1)).toFixed(1)}cm?</span></div>
+    <div class="stats">${STATS.map(s => { const fuzz = p.stats[s.id] + (Math.random() * 10 - 5); return `<div class="s-row"><span>${s.n}</span><span class="rnk r-${GetRank(fuzz)}">${GetRank(fuzz)}</span></div>`; }).join('')}</div>
+    <div class="c-apt">${POS.map(po => `<span class="apt-item">${po}:<span class="apt-val ${p.apt[po]>=80?'high':''}">${p.apt[po]>=80?'A':'C'}</span></span>`).join('')}</div>
+    <div class="c-skills">${(p.skills||[]).map(sid => { const sk = SKILLS.find(k=>k.id===sid); return sk ? `<span class="sk-tag sk-${sk.t}">${sk.n}</span>` : ''; }).join('')}</div>
     <button class="btn btn-m" onclick="DoScout('${p.id}')">この選手をスカウトする</button>
   `;
   div.innerHTML = html; parent.appendChild(div);
@@ -1448,205 +1336,62 @@ function UpdateUI() {
   document.getElementById('txt-d').innerText = `${G.date.y}年 ${G.date.m}月 ${G.date.d}日`; 
   document.getElementById('txt-msg').innerText = `評判Lv:${G.lv} - ` + (G.match.next ? `次戦:${G.match.next.m}/${G.match.next.d}` : "練習期間"); 
   document.getElementById('txt-m').innerText = G.date.m + '月'; 
-  
   const cal = document.getElementById('cal-days'); cal.innerHTML = ""; 
   for(let i=1; i<=30; i++) { 
-    const d = document.createElement('div'); 
-    d.className = "day" + (i===G.date.d ? " today" : "") + (G.match.next && G.match.next.m===G.date.m && G.match.next.d===i ? " match" : ""); 
-    let mk = ""; 
-    if(G.date.m===5&&i===10) mk="IH"; 
-    if(G.date.m===10&&i===13) mk="春"; 
-    if(G.date.m===1&&i===10) mk="新"; 
-    d.innerHTML = i + (mk?`<div class="mark">${mk}</div>`:""); 
-    cal.appendChild(d); 
+    const d = document.createElement('div'); d.className = "day" + (i===G.date.d ? " today" : "") + (G.match.next && G.match.next.m===G.date.m && G.match.next.d===i ? " match" : ""); 
+    let mk = ""; if(G.date.m===5&&i===10) mk="IH"; if(G.date.m===10&&i===13) mk="春"; if(G.date.m===1&&i===10) mk="新"; 
+    d.innerHTML = i + (mk?`<div class="mark">${mk}</div>`:""); cal.appendChild(d); 
   } 
-  
   const btn = document.getElementById('btn-act'); 
-  if(G.match.played) { 
-    btn.innerText = "試合終了 (翌日へ)"; btn.className = "btn btn-m"; 
-  } else if(IsMatchDay()) { 
-    btn.innerText = "試合会場へ移動 (開始)"; btn.className = "btn btn-r"; 
-  } else { 
-    const days = GetDaysToNext(); 
-    btn.innerText = (days>0 && days<=3) ? `決戦まであと${days}日 (調整)` : "3日間 指導を進める"; 
-    btn.className = (days>0 && days<=3) ? "btn btn-m" : "btn btn-g"; 
-  } 
-  
-  const list = document.getElementById('list-team'); 
-  list.innerHTML = ""; 
-  [...G.team].sort((a,b)=>b.grade - a.grade).forEach(p => RenderCard(p, list)); 
+  if(G.match.played) { btn.innerText = "試合終了 (翌日へ)"; btn.className = "btn btn-m"; } 
+  else if(IsMatchDay()) { btn.innerText = "試合会場へ移動 (開始)"; btn.className = "btn btn-r"; } 
+  else { const days = GetDaysToNext(); btn.innerText = (days>0 && days<=3) ? `決戦まであと${days}日 (調整)` : "3日間 指導を進める"; btn.className = (days>0 && days<=3) ? "btn btn-m" : "btn btn-g"; } 
+  const list = document.getElementById('list-team'); list.innerHTML = ""; [...G.team].sort((a,b)=>b.grade - a.grade).forEach(p => RenderCard(p, list)); 
 }
-
-function GetGrowthMod(currentVal) { 
-  if (currentVal < 50) return 1.0; 
-  if (currentVal < 70) return 0.7; 
-  if (currentVal < 85) return 0.4; 
-  if (currentVal < 95) return 0.15; 
-  return 0.05; 
-}
-
-function GetEv(m, d) { 
-  if(m===5 && d===10) return "IH予選"; 
-  if(m===10 && d===13) return "春高予選"; 
-  if(m===1 && d===10) return "新人戦"; 
-  return null; 
-}
-
-function IsMatchDay() { 
-  if(G.match.played) return false; 
-  const ev = GetEv(G.date.m, G.date.d); 
-  if(ev) return !(ev==="新人戦" && G.match.winSpr); 
-  const n = G.match.next; 
-  return (n && n.m===G.date.m && n.d===G.date.d); 
-}
-
-function GetDaysToNext() { 
-  const n = G.match.next; 
-  if(n && n.m===G.date.m) return n.d - G.date.d; 
-  if(G.date.m===5 && G.date.d<10) return 10 - G.date.d; 
-  if(G.date.m===10 && G.date.d<13) return 13 - G.date.d; 
-  if(G.date.m===1 && G.date.d<10 && !G.match.winSpr) return 10 - G.date.d; 
-  return 99; 
-}
+function GetGrowthMod(currentVal) { if (currentVal < 50) return 1.0; if (currentVal < 70) return 0.7; if (currentVal < 85) return 0.4; if (currentVal < 95) return 0.15; return 0.05; }
+function GetEv(m, d) { if(m===5 && d===10) return "IH予選"; if(m===10 && d===13) return "春高予選"; if(m===1 && d===10) return "新人戦"; return null; }
+function IsMatchDay() { if(G.match.played) return false; const ev = GetEv(G.date.m, G.date.d); if(ev) return !(ev==="新人戦" && G.match.winSpr); const n = G.match.next; return (n && n.m===G.date.m && n.d===G.date.d); }
+function GetDaysToNext() { const n = G.match.next; if(n && n.m===G.date.m) return n.d - G.date.d; if(G.date.m===5 && G.date.d<10) return 10 - G.date.d; if(G.date.m===10 && G.date.d<13) return 13 - G.date.d; if(G.date.m===1 && G.date.d<10 && !G.match.winSpr) return 10 - G.date.d; return 99; }
 
 function NextDay() {
-  if(IsMatchDay()) { 
-    const ev = GetEv(G.date.m, G.date.d); 
-    if(ev) StartMatch(ev, 1, false); 
-    else if(G.match.next) StartMatch(G.match.next.name, G.match.next.round, G.match.next.isNat); 
-    return; 
-  }
-  
-  if(G.date.m === 11 && G.date.d === 1 && !G.scoutDone) { 
-    StartScoutEvent(); 
-    return; 
-  }
+  if(IsMatchDay()) { const ev = GetEv(G.date.m, G.date.d); if(ev) StartMatch(ev, 1, false); else if(G.match.next) StartMatch(G.match.next.name, G.match.next.round, G.match.next.isNat); return; }
+  if(G.date.m === 11 && G.date.d === 1 && !G.scoutDone) { StartScoutEvent(); return; }
   
   G.team.forEach(p => {
-    if(Math.random() < 0.3) { 
-      if(Math.random() < 0.5 && p.cond < 4) p.cond++; 
-      else if(p.cond > 0) p.cond--; 
-    }
+    if(Math.random() < 0.3) { if(Math.random() < 0.5 && p.cond < 4) p.cond++; else if(p.cond > 0) p.cond--; }
     if(Math.random() < 0.01) p.cond = 5; 
-
-    const m = MENU.find(x=>x.id===p.menu)||MENU[0]; 
-    const efficiency = 0.6 + (G.lv * 0.008);
-    let baseGain = 0.45; 
-    if(m.s.length===1) baseGain=1.0; 
-    if(m.s.length===2) baseGain=0.6; 
-    if(m.s.length>=7) baseGain=0.15;
-    
-    STATS.forEach(s => { 
-      let g = 0.05; 
-      if(m.s.includes(s.id)) g = baseGain; 
-      g *= p.pers.m * efficiency * GetGrowthMod(p.stats[s.id]); 
-      p.stats[s.id] = Math.min(100, p.stats[s.id]+g); 
-    });
-    
+    const m = MENU.find(x=>x.id===p.menu)||MENU[0]; const efficiency = 0.6 + (G.lv * 0.008); let baseGain = 0.45; if(m.s.length===1) baseGain=1.0; if(m.s.length===2) baseGain=0.6; if(m.s.length>=7) baseGain=0.15;
+    STATS.forEach(s => { let g = 0.05; if(m.s.includes(s.id)) g = baseGain; g *= p.pers.m * efficiency * GetGrowthMod(p.stats[s.id]); p.stats[s.id] = Math.min(100, p.stats[s.id]+g); });
     p.apt[p.pos] = Math.min(100, p.apt[p.pos]+(p.menu==='pos'?12:0.3));
-    
-    if(p.gCur < p.gMax && Math.random()<0.4) { 
-      let grow = Math.random()*0.2; 
-      if(p.gCur+grow>p.gMax) grow=p.gMax-p.gCur; 
-      p.gCur+=grow; 
-      if(!p.hNow) p.hNow=170; 
-      p.hNow+=grow; 
-    }
+    if(p.gCur < p.gMax && Math.random()<0.4) { let grow = Math.random()*0.2; if(p.gCur+grow>p.gMax) grow=p.gMax-p.gCur; p.gCur+=grow; if(!p.hNow) p.hNow=170; p.hNow+=grow; }
   });
-  
-  let add = 3; 
-  const days = GetDaysToNext(); 
-  if(days>0 && days<=3) add = days; 
-  
-  G.date.d += add; G.match.played = false;
-  if(G.date.d > 30) { G.date.d=1; G.date.m++; }
-  if(G.date.m > 12) { 
-    G.date.m=1; G.date.y++; 
-    G.match.winSpr = false; 
-    G.match.next = null; 
-    G.pracMonth=0; 
-    G.scoutDone=false;
-    G.team.forEach(p=>p.grade++); 
-    G.team = G.team.filter(p=>p.grade<=3); 
-    for(let i=0;i<6;i++) if(G.starters[i]&&G.starters[i].grade>3) G.starters[i]=null; 
-    if(G.libero&&G.libero.grade>3) G.libero=null; 
-  }
-  
-  if(G.date.m===4 && G.date.d===1) { ChangeView('v-scout'); RenderScout(); } 
-  else { UpdateUI(); } 
-  Save();
+  let add = 3; const days = GetDaysToNext(); if(days>0 && days<=3) add = days; 
+  G.date.d += add; G.match.played = false; if(G.date.d > 30) { G.date.d=1; G.date.m++; }
+  if(G.date.m > 12) { G.date.m=1; G.date.y++; G.match.winSpr = false; G.match.next = null; G.pracMonth=0; G.scoutDone=false; G.team.forEach(p=>p.grade++); G.team = G.team.filter(p=>p.grade<=3); for(let i=0;i<6;i++) if(G.starters[i]&&G.starters[i].grade>3) G.starters[i]=null; if(G.libero&&G.libero.grade>3) G.libero=null; }
+  if(G.date.m===4 && G.date.d===1) { ChangeView('v-scout'); RenderScout(); } else { UpdateUI(); } Save();
 }
 
 function StartScoutEvent() {
   G.scoutDone = true; window.scoutCandidates = []; 
-  
-  let candNum = 4; 
-  if(G.lv >= 30) candNum = 6; 
-  if(G.lv >= 60) candNum = 8;
-  
+  let candNum = 4; if(G.lv >= 30) candNum = 6; if(G.lv >= 60) candNum = 8;
   for(let i=0; i<candNum; i++) window.scoutCandidates.push(MakePlayer(1));
-  
-  let slot = 1; 
-  if(G.lv>=20) slot=2; 
-  if(G.lv>=50) slot=3; 
-  if(G.lv>=80) slot=4;
-  window.scoutSlot = slot;
-  
-  ChangeView('v-scout-select'); 
-  DrawScoutList();
+  let slot = 1; if(G.lv>=20) slot=2; if(G.lv>=50) slot=3; if(G.lv>=80) slot=4; window.scoutSlot = slot;
+  ChangeView('v-scout-select'); DrawScoutList();
 }
-
-function DrawScoutList() {
-  document.getElementById('sc-lv').innerText = G.lv;
-  document.getElementById('sc-slot').innerText = window.scoutSlot;
-  const el = document.getElementById('list-scout-cand'); el.innerHTML = "";
-  window.scoutCandidates.forEach(p => RenderScoutCard(p, el));
-}
-
+function DrawScoutList() { document.getElementById('sc-lv').innerText = G.lv; document.getElementById('sc-slot').innerText = window.scoutSlot; const el = document.getElementById('list-scout-cand'); el.innerHTML = ""; window.scoutCandidates.forEach(p => RenderScoutCard(p, el)); }
 function DoScout(id) {
-  if(window.scoutSlot <= 0) return alert("スカウト枠がありません！");
-  const p = window.scoutCandidates.find(x => x.id === id);
-  if(!p) return;
-  
+  if(window.scoutSlot <= 0) return alert("スカウト枠がありません！"); const p = window.scoutCandidates.find(x => x.id === id); if(!p) return;
   if(confirm(`評価: ${GetRank(Object.values(p.stats).reduce((a,b)=>a+b,0)/8)}\n${p.name} (${p.pos})\nこの選手をスカウトしますか？(必ず成功します)`)) {
-    G.scouted.push(p);
-    window.scoutSlot--;
-    window.scoutCandidates = window.scoutCandidates.filter(x => x.id !== id);
-    DrawScoutList();
-    alert("スカウト成功！来年4月に入部します。");
+    G.scouted.push(p); window.scoutSlot--; window.scoutCandidates = window.scoutCandidates.filter(x => x.id !== id); DrawScoutList(); alert("スカウト成功！来年4月に入部します。");
   }
 }
+function FinishScout() { if(window.scoutSlot > 0) { if(!confirm(`まだ${window.scoutSlot}人スカウトできますが、終了しますか？`)) return; } window.scoutCandidates = null; ChangeView('v-main'); UpdateUI(); Save(); }
 
-function FinishScout() {
-  if(window.scoutSlot > 0) {
-    if(!confirm(`まだ${window.scoutSlot}人スカウトできますが、終了しますか？`)) return;
-  }
-  window.scoutCandidates = null;
-  ChangeView('v-main');
-  UpdateUI();
-  Save();
-}
+function PracticeM() { if(G.match.played) return alert("試合終了済みです"); if(G.pracMonth === G.date.m) return alert("練習試合は月1回までです"); if(confirm("練習試合を行いますか？")) { G.pracMonth = G.date.m; StartMatch("練習試合", 1, false); } }
 
-function PracticeM() { 
-  if(G.match.played) return alert("試合終了済みです"); 
-  if(G.pracMonth === G.date.m) return alert("練習試合は月1回までです"); 
-  if(confirm("練習試合を行いますか？")) { 
-    G.pracMonth = G.date.m; 
-    StartMatch("練習試合", 1, false); 
-  } 
-}
-
+// v69.0: Briefing
 function StartMatch(name, round, isNat) {
-  if(!G.starters.every(s=>s)) { 
-    AutoOrder(); 
-    if(!G.starters.every(s=>s)) return alert("スタメン不足です。"); 
-  }
-  G.match.active = true; G.match.name = name; G.match.round = round; G.match.isNat = isNat; 
-  G.match.my=0; G.match.opp=0; G.match.court=[...G.starters]; G.match.mbBench=null; 
-  
-  G.match.isMyServe = Math.random() < 0.5;
-  G.match.flow = 0; G.match.to = 2; G.match.auto = false; 
-  UpdateTOBtn();
+  if(!G.starters.every(s=>s)) { AutoOrder(); if(!G.starters.every(s=>s)) return alert("スタメン不足です。"); }
   
   let enemyData = null;
   if (name === "練習試合") {
@@ -1654,355 +1399,174 @@ function StartMatch(name, round, isNat) {
   } else {
       enemyData = GenerateEnemy(round, isNat);
   }
-  G.match.pow = enemyData.pow;
-  G.match.enemyType = enemyData.type; 
   
+  G.match.active = true; G.match.name = name; G.match.round = round; G.match.isNat = isNat; 
+  G.match.pow = enemyData.pow; G.match.enemyType = enemyData.type;
+  G.match.my=0; G.match.opp=0; G.match.court=[...G.starters]; G.match.mbBench=null; 
+  G.match.isMyServe = Math.random() < 0.5; G.match.flow = 0; G.match.to = 2; G.match.auto = false;
+  
+  document.getElementById('ui-match-brief').style.display = 'flex';
+  document.getElementById('brief-info').innerText = `${name} ${isNat?'全国':''} ${round}回戦`;
+  document.getElementById('brief-power').innerText = `相手: ${enemyData.name} (戦力:${enemyData.pow})`;
+}
+
+function RealStartMatch() {
+  document.getElementById('ui-match-brief').style.display = 'none';
   document.getElementById('ui-match').style.display = 'block'; 
-  document.getElementById('m-info').innerHTML = `${name} ${isNat?'全国':''} ${round}回戦<br><span style="color:var(--lose); font-size:1.2em;">${enemyData.name}</span><br><span style="font-size:0.8em; color:#ccc;">タイプ:${enemyData.type.n} / 総合力:${enemyData.pow}</span>`;
-  document.getElementById('m-log').innerHTML = ""; 
-  document.getElementById('m-end').style.display='none'; 
-  document.getElementById('btn-next-rd').style.display='none'; 
-  document.getElementById('btn-force').style.display='none';
+  UpdateTOBtn();
+  
+  const mInfo = document.getElementById('m-info');
+  const eName = G.match.name === "練習試合" ? "近所の高校" : E_PRE[0]+"高校"; // Name not stored in G.match in old ver, but here we can just use generic if not stored. 
+  // Ideally G.match should store enemyName, but for now we use display logic:
+  mInfo.innerHTML = `${G.match.name} ${G.match.isNat?'全国':''} ${G.match.round}回戦<br><span style="color:var(--lose); font-size:1.2em;">総合力:${G.match.pow}</span>`;
+  
+  document.getElementById('m-log').innerHTML = ""; document.getElementById('m-end').style.display='none'; document.getElementById('btn-next-rd').style.display='none'; document.getElementById('btn-force').style.display='none';
   
   Sound.playSE('whistle'); 
-  
-  let bgmType = 'match';
-  if (G.match.round === 5) {
-      bgmType = 'finals';
-      Log("🔥 決勝戦！相手は格上だ！", "var(--accent)", true);
-  }
+  let bgmType = 'match'; if (G.match.round === 5) { bgmType = 'finals'; Log("🔥 決勝戦！相手は格上だ！", "var(--accent)", true); }
   Sound.playBGM(bgmType);
   
-  CheckLibero(); 
-  DrawMatch(); 
-  
-  if(G.match.isMyServe) { 
-    Log("味方のサーブです。", "cyan"); 
-    NextCmd(); 
-  } else { 
-    Log("相手のサーブです。", "var(--lose)"); 
-    AutoAction(); 
-  }
+  CheckLibero(); DrawMatch(); 
+  if(G.match.isMyServe) { Log("味方のサーブです。", "cyan"); NextCmd(); } else { Log("相手のサーブです。", "var(--lose)"); AutoAction(); }
 }
 
 function CheckLibero() { 
   if(!G.libero) return; 
   const c = G.match.court; 
-  
-  // 前衛にいたら戻す
-  [0, 1, 2].forEach(i => {
-    if(c[i].id === G.libero.id && G.match.mbBench) {
-        c[i] = G.match.mbBench; 
-        G.match.mbBench = null;
-    }
-  });
-
-  // 後衛のMBと交代
-  [4, 5].forEach(i => {
-    if(c[i].pos === 'MB' && c[i].id !== G.libero.id) {
-        G.match.mbBench = c[i]; 
-        c[i] = G.libero; 
-    }
-  });
+  [0, 1, 2].forEach(i => { if(c[i].id === G.libero.id && G.match.mbBench) { c[i] = G.match.mbBench; G.match.mbBench = null; } });
+  [4, 5].forEach(i => { if(c[i].pos === 'MB' && c[i].id !== G.libero.id) { G.match.mbBench = c[i]; c[i] = G.libero; } });
 }
-
 function Rotate() { 
-  if(G.match.mbBench) {
-      const c = G.match.court;
-      const idx = c.findIndex(p => p.id === G.libero.id);
-      if(idx !== -1) {
-          c[idx] = G.match.mbBench;
-          G.match.mbBench = null;
-      }
-  }
-  const c = G.match.court; 
-  c.unshift(c.pop()); 
-  CheckLibero(); 
+  if(G.match.mbBench) { const c = G.match.court; const idx = c.findIndex(p => p.id === G.libero.id); if(idx !== -1) { c[idx] = G.match.mbBench; G.match.mbBench = null; } }
+  const c = G.match.court; c.unshift(c.pop()); CheckLibero(); 
 }
 
 function DrawMatch() { 
-  document.getElementById('s-my').innerText = G.match.my; 
-  document.getElementById('s-opp').innerText = G.match.opp; 
-  
-  const el = document.getElementById('m-court'); 
-  el.innerHTML = ""; 
-  
-  [0,1,2].forEach(i=>{
-    const p=G.match.court[i]; 
-    el.innerHTML+=`<div class="pos" onclick="ShowDetail('${p.id}')">${p.name.split(' ')[0]}<br>${p.pos}</div>`;
-  }); 
-  
-  [5,4,3].forEach(i=>{
-    const p=G.match.court[i]; 
-    el.innerHTML+=`<div class="pos back" onclick="ShowDetail('${p.id}')">${p.name.split(' ')[0]}<br>${p.pos}${i===3?' (S)':''}</div>`;
-  }); 
-  
-  const courtEl = document.getElementById('m-court');
-  courtEl.classList.remove('good-flow', 'bad-flow');
-  
-  if(G.match.flow >= 2) courtEl.classList.add('good-flow');
-  if(G.match.flow <= -2) courtEl.classList.add('bad-flow');
+  document.getElementById('s-my').innerText = G.match.my; document.getElementById('s-opp').innerText = G.match.opp; 
+  const el = document.getElementById('m-court'); el.innerHTML = ""; 
+  [0,1,2].forEach(i=>{ const p=G.match.court[i]; el.innerHTML+=`<div class="pos" onclick="ShowDetail('${p.id}')">${p.name.split(' ')[0]}<br>${p.pos}</div>`; }); 
+  [5,4,3].forEach(i=>{ const p=G.match.court[i]; el.innerHTML+=`<div class="pos back" onclick="ShowDetail('${p.id}')">${p.name.split(' ')[0]}<br>${p.pos}${i===3?' (S)':''}</div>`; }); 
+  const courtEl = document.getElementById('m-court'); courtEl.classList.remove('good-flow', 'bad-flow');
+  if(G.match.flow >= 2) courtEl.classList.add('good-flow'); if(G.match.flow <= -2) courtEl.classList.add('bad-flow');
 }
-
-function ShowDetail(pid) { 
-  const p = G.team.find(x => x.id === pid); 
-  if(!p) return; 
-  const box = document.getElementById('detail-card'); 
-  box.innerHTML = ""; 
-  RenderCard(p, box, true); 
-  document.getElementById('ui-detail').style.display = 'flex'; 
-}
+function ShowDetail(pid) { const p = G.team.find(x => x.id === pid); if(!p) return; const box = document.getElementById('detail-card'); box.innerHTML = ""; RenderCard(p, box, true); document.getElementById('ui-detail').style.display = 'flex'; }
 function CloseDetail() { document.getElementById('ui-detail').style.display = 'none'; }
 function ShowHelp() { document.getElementById('ui-help').style.display = 'flex'; }
 function CloseHelp() { document.getElementById('ui-help').style.display = 'none'; }
 
 function TimeOut() {
-  if(!G.match.active) return;
-  if(G.match.to <= 0) return alert("タイムアウトはもう使えません");
-  if(G.match.flow >= 0) return alert("今は相手の流れではありません");
-  
-  G.match.to--; 
-  G.match.flow = 0; 
-  
-  Effect('flash'); 
-  Sound.playSE('whistle');
-  Log("タイムアウトを取りました。相手の流れを断ち切った！", "white"); 
-  
-  UpdateTOBtn(); 
-  DrawMatch();
+  if(!G.match.active) return; if(G.match.to <= 0) return alert("タイムアウトはもう使えません"); if(G.match.flow >= 0) return alert("今は相手の流れではありません");
+  G.match.to--; G.match.flow = 0; Effect('flash'); Sound.playSE('whistle'); Log("タイムアウトを取りました。相手の流れを断ち切った！", "white"); UpdateTOBtn(); DrawMatch();
 }
-
 function ToggleAuto() {
   G.match.auto = !G.match.auto;
   const btn = document.getElementById('btn-auto');
-  if(G.match.auto) {
-    btn.classList.add('active');
-    btn.innerText = "■ 停止";
+  if(G.match.auto) { btn.classList.add('active'); btn.innerText = "■ 停止"; 
     if(G.match.isMyServe) NextCmd(); else AutoAction(); 
-  } else {
-    btn.classList.remove('active');
-    btn.innerText = "▶ おまかせ";
-  }
+  } else { btn.classList.remove('active'); btn.innerText = "▶ おまかせ"; }
 }
-
 function UpdateTOBtn() {
-  const btn = document.getElementById('btn-to');
-  btn.innerText = `✋ タイムアウト (残${G.match.to})`;
-  btn.style.opacity = (G.match.to > 0 && G.match.flow < 0) ? 1 : 0.5;
-  btn.disabled = !(G.match.to > 0 && G.match.flow < 0);
-  
-  const aBtn = document.getElementById('btn-auto');
-  if(G.match.auto) {
-    aBtn.classList.add('active');
-    aBtn.innerText = "■ 停止";
-  } else {
-    aBtn.classList.remove('active');
-    aBtn.innerText = "▶ おまかせ";
-  }
+  const btn = document.getElementById('btn-to'); btn.innerText = `✋ タイムアウト (残${G.match.to})`;
+  btn.style.opacity = (G.match.to > 0 && G.match.flow < 0) ? 1 : 0.5; btn.disabled = !(G.match.to > 0 && G.match.flow < 0);
+  const aBtn = document.getElementById('btn-auto'); if(G.match.auto) { aBtn.classList.add('active'); aBtn.innerText = "■ 停止"; } else { aBtn.classList.remove('active'); aBtn.innerText = "▶ おまかせ"; }
 }
-
 function Effect(type) {
-  if(type==='shake') { 
-    document.body.classList.add('shake'); 
-    setTimeout(()=>document.body.classList.remove('shake'), 500); 
-  }
-  if(type==='flash') {
-    const el = document.getElementById('flash-layer'); 
-    el.classList.add('flash-fx');
-    setTimeout(()=>el.classList.remove('flash-fx'), 300);
-  }
+  if(type==='shake') { document.body.classList.add('shake'); setTimeout(()=>document.body.classList.remove('shake'), 500); }
+  if(type==='flash') { const el = document.getElementById('flash-layer'); el.classList.add('flash-fx'); setTimeout(()=>el.classList.remove('flash-fx'), 300); }
 }
 
 function NextCmd() {
-  const box = document.getElementById('m-cmd'); 
-  box.innerHTML = ""; 
-  document.getElementById('m-state').innerText = "Command Phase";
-  
+  const box = document.getElementById('m-cmd'); box.innerHTML = ""; document.getElementById('m-state').innerText = "Command Phase";
   if(G.match.auto) {
     box.innerHTML = `<div style="grid-column:span 2; text-align:center; color:#f1c40f;">Auto Playing...</div>`;
     setTimeout(() => {
       if(!G.match.active) return;
       if(G.match.isMyServe) {
-        const c = G.match.court; 
-        const candidates = []; 
-        [0,1,2].forEach(i => { if(c[i]) candidates.push(c[i].id); });
-        const ba = c[5]; 
-        if(ba && ba.pos==='OH') candidates.push(ba.id);
-        
+        const c = G.match.court; const candidates = []; [0,1,2].forEach(i => { if(c[i]) candidates.push(c[i].id); });
+        const ba = c[5]; if(ba && ba.pos==='OH') candidates.push(ba.id);
         const sId = candidates[Math.floor(Math.random() * candidates.length)];
         Action(sId, 50); 
-      } else { 
-        AutoAction(); 
-      }
+      } else { AutoAction(); }
     }, 600);
     return; 
   }
-
-  const c = G.match.court; 
-  let s = [c[3],c[4],c[5],c[0],c[1],c[2]].find(p=>p && p.pos==='S') || c[1];
+  const c = G.match.court; let s = [c[3],c[4],c[5],c[0],c[1],c[2]].find(p=>p && p.pos==='S') || c[1];
   const flowBonus = Math.max(0, G.match.flow * 0.1); 
-  
   [0,1,2].forEach(i => {
-    const p = c[i]; 
-    if(!p) return;
-    
-    let type='spike', lbl='攻撃';
-    if(p.pos==='MB') { type='quick'; lbl='クイック'; } 
-    else if(p.id===s.id) { if(Math.random()>0.3) return; type='quick'; lbl='ツー'; } 
-    else if(i===1) { type='quick'; lbl='時間差'; } 
-    else if(i===2) { type='spike'; lbl='ライト'; } 
-    else { type='spike'; lbl='レフト'; }
-    
-    const apt = (p.apt[p.pos]||0)/100;
-    const condMod = GetCondVal(p);
-    const rate = (0.6 + (0.4 * apt)) * condMod;
-    const hBonus = ((p.hNow||170) - 170) * 0.5;
-    
-    let sTos = s.stats.tos * GetCondVal(s);
-    if(HasSkill(s,'brain')) { sTos += 10; }
-    if(HasSkill(s,'monotone')) { sTos -= 10; }
-    if(HasSkill(s,'longbad') && (type==='spike')) { sTos -= 8; }
-
+    const p = c[i]; if(!p) return;
+    let type='spike', lbl='攻撃'; if(p.pos==='MB') {type='quick'; lbl='クイック';} else if(p.id===s.id) {if(Math.random()>0.3) return; type='quick'; lbl='ツー';} else if(i===1) {type='quick'; lbl='時間差';} else if(i===2) {type='spike'; lbl='ライト';} else {type='spike'; lbl='レフト';}
+    const apt = (p.apt[p.pos]||0)/100; const condMod = GetCondVal(p); const rate = (0.6 + (0.4 * apt)) * condMod; const hBonus = ((p.hNow||170) - 170) * 0.5;
+    let sTos = s.stats.tos * GetCondVal(s); if(HasSkill(s,'brain')) sTos += 10; if(HasSkill(s,'monotone')) sTos -= 10; if(HasSkill(s,'longbad') && (type==='spike')) sTos -= 8;
     let pow = p.stats.pow, tec = p.stats.tec, jmp = p.stats.jmp, spd = p.stats.spd;
-    
-    if(HasSkill(p,'muscle')) { pow+=10; }
-    if(HasSkill(p,'straight')) { tec+=5; pow+=5; }
-    if(HasSkill(p,'inner')) { tec+=10; }
-    if(HasSkill(p,'backswing')) { jmp+=10; }
-    if(HasSkill(p,'wrist')) { pow-=5; tec+=10; jmp+=10; }
-    if(HasSkill(p,'turn')) { jmp+=5; tec+=8; }
-    if(HasSkill(p,'circular')) { pow+=10; }
-    if(HasSkill(p,'yakult')) { jmp-=20; }
-    if(HasSkill(p,'fukashi')) { pow+=5; }
+    if(HasSkill(p,'muscle')) pow+=10; if(HasSkill(p,'straight')) { tec+=5; pow+=5; } if(HasSkill(p,'inner')) tec+=10; 
+    if(HasSkill(p,'backswing')) jmp+=10; if(HasSkill(p,'wrist')) { pow-=5; tec+=10; jmp+=10; } if(HasSkill(p,'turn')) { jmp+=5; tec+=8; } 
+    if(HasSkill(p,'circular')) pow+=10; if(HasSkill(p,'yakult')) jmp-=20; if(HasSkill(p,'fukashi')) pow+=5; 
     if(HasSkill(p,'trust') && G.match.my < G.match.opp) { pow+=10; tec+=10; jmp+=10; spd+=10; }
-    if(HasSkill(p,'dump') && lbl==='ツー') { pow+=7; tec+=7; }
-    if(HasSkill(p,'feint')) { tec+=8; }
-
+    if(HasSkill(p,'dump') && lbl==='ツー') { pow+=7; tec+=7; } if(HasSkill(p,'feint')) tec+=8;
     const basePower = ((pow+tec+jmp+spd)/4)*condMod * (1.0 + flowBonus); 
-    
     let enemyDef = G.match.pow * 0.9;
     if(G.match.enemyType && G.match.enemyType.def) enemyDef *= G.match.enemyType.def;
-    
-    if(HasSkill(p,'blockout')) { enemyDef *= 0.9; }
-    if(HasSkill(p,'circular')) { enemyDef -= 10; }
-    
+    if(HasSkill(p,'blockout')) enemyDef *= 0.9; if(HasSkill(p,'circular')) enemyDef -= 10;
     let est = Math.floor(Math.min(99, Math.max(5, (20 + (basePower*1.2+hBonus)*(sTos/100)*0.8 - (enemyDef * 0.5)) * rate)));
-    
-    if(HasSkill(p,'feint')) { est += 8; }
-    if(G.match.last===p.id) { est-=15; }
-    
-    const btn = document.createElement('button'); 
-    btn.className = "cmd"; 
+    if(HasSkill(p,'feint')) est += 8; if(G.match.last===p.id) est-=15;
+    const btn = document.createElement('button'); btn.className = "cmd"; 
     btn.innerHTML = `<b>${lbl}: ${p.name.split(' ')[0]}</b><span>確率${est}%</span>`; 
-    btn.onclick = () => Action(p.id, est); 
-    box.appendChild(btn);
+    btn.onclick = () => Action(p.id, est); box.appendChild(btn);
   });
-  
   const ba = c[5];
   if(ba && ba.pos==='OH' && ba.id!==s.id) {
     let est = 30 * GetCondVal(ba);
-    if(HasSkill(ba,'backtoss') && (ba.pos==='OP'||c[2].id===s.id)) { est+=10; }
-    if(G.match.last===ba.id) { est-=15; }
-    
-    const btn = document.createElement('button'); 
-    btn.className = "cmd"; 
+    if(HasSkill(ba,'backtoss') && (ba.pos==='OP'||c[2].id===s.id)) est+=10; if(G.match.last===ba.id) est-=15;
+    const btn = document.createElement('button'); btn.className = "cmd"; 
     btn.innerHTML = `<b>バック: ${ba.name.split(' ')[0]}</b><span>確率${Math.floor(est)}%</span>`; 
-    btn.onclick = () => Action(ba.id, Math.max(5, Math.floor(est))); 
-    box.appendChild(btn);
+    btn.onclick = () => Action(ba.id, Math.max(5, Math.floor(est))); box.appendChild(btn);
   }
 }
-
 function ForceNext() { AutoAction(); }
 
 function Action(id, est) {
-  document.getElementById('m-cmd').innerHTML = ""; 
-  document.getElementById('m-state').innerText = "Rally..."; 
-  G.match.last = id;
-  
+  document.getElementById('m-cmd').innerHTML = ""; document.getElementById('m-state').innerText = "Rally..."; G.match.last = id;
   const srv = G.match.court[3]; 
   
-  // 自サーブ処理
   if(G.match.isMyServe) {
       let srvS = srv.stats.srv, srvP = srv.stats.pow, srvT = srv.stats.tec;
-      if(HasSkill(srv,'spksrv')) { srvS+=10; srvP+=10; srvT+=10; }
-      if(HasSkill(srv,'jmpfloat')) { srvS+=5; srvP+=5; srvT+=5; }
-      if(HasSkill(srv,'float')) { srvS+=5; }
-      if(HasSkill(srv,'nospin')) { srvP+=5; }
-      if(HasSkill(srv,'pressbad')) { srvS-=10; srvP-=10; srvT-=10; }
-      if(HasSkill(srv,'justin')) { srvP=0; }
-
+      if(HasSkill(srv,'spksrv')) { srvS+=10; srvP+=10; srvT+=10; } if(HasSkill(srv,'jmpfloat')) { srvS+=5; srvP+=5; srvT+=5; } if(HasSkill(srv,'float')) srvS+=5; 
+      if(HasSkill(srv,'nospin')) srvP+=5; if(HasSkill(srv,'pressbad')) { srvS-=10; srvP-=10; srvT-=10; } if(HasSkill(srv,'justin')) srvP=0;
       let srvChance = ((srvS*0.7+srvP*0.15+srvT*0.15)*GetCondVal(srv)/100*0.05);
-      if(HasSkill(srv,'spksrv')) { srvChance += 0.02; }
-      if(HasSkill(srv,'netmid')) { srvChance -= 0.05; }
-      
-      let srvMiss = 0.05;
-      if(HasSkill(srv,'spksrv')) { srvMiss += 0.10; }
-      if(HasSkill(srv,'netmid')) { srvMiss += 0.10; }
-      if(HasSkill(srv,'justin')) { srvMiss = 0; }
-
-      if(Math.random() < srvMiss) {
-         Log(`${srv.name}: ${Pick(LOGS.miss)} (サーブミス)`, "var(--lose)"); 
-         Score(false,true); 
-         return;
-      }
-
+      if(HasSkill(srv,'spksrv')) srvChance += 0.02; if(HasSkill(srv,'netmid')) srvChance -= 0.05;
+      let srvMiss = 0.05; if(HasSkill(srv,'spksrv')) srvMiss += 0.10; if(HasSkill(srv,'netmid')) srvMiss += 0.10; if(HasSkill(srv,'justin')) srvMiss = 0;
+      if(Math.random() < srvMiss) { Log(`${srv.name}: ${Pick(LOGS.miss)} (サーブミス)`, "var(--lose)"); Score(false,true); return; }
       if(Math.random() < srvChance) { 
         Log(`${srv.name}: ${Pick(LOGS.ace)}`, "gold", true); 
         Sound.playSE('whistle'); 
-        Effect('shake'); 
-        srv.hist.score++; 
-        Score(true,true); 
-        return; 
+        Effect('shake'); // Ace: Keep shake
+        srv.hist.score++; Score(true,true); return; 
       }
   }
   
   const s = [G.match.court[3],G.match.court[4],G.match.court[5],G.match.court[0],G.match.court[1],G.match.court[2]].find(p=>p.pos==='S') || G.match.court[1];
   if(s) {
     let sMiss = 0.15 - ((s.stats.tec+s.stats.tos)*GetCondVal(s)/2000);
-    if(HasSkill(s,'soft')) { s.stats.tos+=8; sMiss -= 0.05; }
-    if(HasSkill(s,'dribble')) { sMiss += 0.05; }
-    
-    if(Math.random() < Math.max(0.01, sMiss)) { 
-      Log(`${s.name.split(' ')[0]}: ${Pick(LOGS.toss_miss)}`, "var(--lose)"); 
-      Score(false,true); 
-      return; 
-    }
+    if(HasSkill(s,'soft')) { s.stats.tos+=8; sMiss -= 0.05; } if(HasSkill(s,'dribble')) sMiss += 0.05;
+    if(Math.random() < Math.max(0.01, sMiss)) { Log(`${s.name.split(' ')[0]}: ${Pick(LOGS.toss_miss)}`, "var(--lose)"); Score(false,true); return; }
   }
-  
   const p = G.match.court.find(x=>x.id===id);
   if(p) {
     let missRate = 0.20-((p.stats.tec+p.stats.iq)*GetCondVal(p)*0.0008)-(p.pers.n==='冷静'?0.01:0);
-    if(HasSkill(p,'fukashi')) { missRate += 0.1; }
-    if(HasSkill(p,'under')) { missRate += 0.05; }
-    
-    if(Math.random() < Math.max(0.02, missRate)) { 
-      Log(`${p.name}: ${Pick(LOGS.miss)}`, "var(--lose)"); 
-      Score(false,true); 
-      return; 
-    }
+    if(HasSkill(p,'fukashi')) missRate += 0.1; if(HasSkill(p,'under')) missRate += 0.05;
+    if(Math.random() < Math.max(0.02, missRate)) { Log(`${p.name}: ${Pick(LOGS.miss)}`, "var(--lose)"); Score(false,true); return; }
   }
-  
   if(Math.random()*100 < est) {
-    if(s && HasSkill(s,'onehand') && Math.random()<0.05) { G.match.pow -= 5; }
+    if(s && HasSkill(s,'onehand') && Math.random()<0.05) G.match.pow -= 5;
     const type = p && p.pos==='MB' ? 'quick' : 'atk';
     Log(`${p?p.name:"味方"}: ${Pick(LOGS[type])}`, "var(--main)", true); 
     Sound.playSE('spike'); 
-    Effect('shake'); 
-    if(p){ p.hist.score++; p.hist.atk++; }
-    Score(true,true);
+    // Effect('shake'); // v69.1: Remove shake on spike
+    if(p){ p.hist.score++; p.hist.atk++; } Score(true,true);
   } else {
-    let rebC = p ? ((p.stats.tec+p.stats.iq)*GetCondVal(p))/200 : 0.3;
-    if(p && HasSkill(p,'rebound')) { rebC += 0.1; }
-    
-    if(Math.random() < rebC) {
-      Log(Pick(LOGS.rebound), "var(--ok)"); 
-      Sound.playSE('recv');
-      setTimeout(NextCmd,800); 
-      return; 
-    }
-    Log(`相手: ${Pick(LOGS.blk)}`, "var(--lose)"); 
-    if(p) { p.hist.atk++; }
-    Score(false,true);
+    let rebC = p ? ((p.stats.tec+p.stats.iq)*GetCondVal(p))/200 : 0.3; if(p && HasSkill(p,'rebound')) rebC += 0.1;
+    if(Math.random() < rebC) { Log(Pick(LOGS.rebound), "var(--ok)"); Sound.playSE('recv'); setTimeout(NextCmd,800); return; }
+    Log(`相手: ${Pick(LOGS.blk)}`, "var(--lose)"); if(p) p.hist.atk++; Score(false,true);
   }
 }
 
@@ -2021,108 +1585,57 @@ function AutoAction() {
       if(Math.random() < 0.1) { Log("相手のサーブミス！", "var(--ok)"); Score(true, false); return; }
   }
 
-  const blk = G.match.court[zone]; 
-  const mb = G.match.court[1]; 
-  const bM = GetCondVal(blk); 
-  const mbM = GetCondVal(mb);
-  
+  const blk = G.match.court[zone]; const mb = G.match.court[1]; 
+  const bM = GetCondVal(blk); const mbM = GetCondVal(mb);
   let bJ=blk.stats.jmp, bP=blk.stats.pow, bI=blk.stats.iq, bSp=blk.stats.spd;
-  if(HasSkill(blk,'commit')) { bI+=10; }
-  if(HasSkill(blk,'step')) { bSp+=10; }
-  if(HasSkill(blk,'lead')) { bSp+=10; }
-  if(HasSkill(blk,'laststand')) { bJ+=5;bP+=5;bI+=5;bSp+=5; }
-  if(HasSkill(blk,'handbad')) { bJ-=5;bP-=5;bI-=5;bSp-=5; }
-  if(HasSkill(blk,'mathoa')) { enP *= 0.9; }
-
-  let mbJ=mb.stats.jmp, mbP=mb.stats.pow, mbI=mb.stats.iq, mbSp=mb.stats.spd;
-  if(HasSkill(mb,'step')) { mbSp+=10; }
-
+  if(HasSkill(blk,'commit')) bI+=10; if(HasSkill(blk,'step')) bSp+=10; if(HasSkill(blk,'lead')) bSp+=10; 
+  if(HasSkill(blk,'laststand')) { bJ+=5;bP+=5;bI+=5;bSp+=5; } if(HasSkill(blk,'handbad')) { bJ-=5;bP-=5;bI-=5;bSp-=5; }
+  if(HasSkill(blk,'mathoa')) enP *= 0.9;
+  let mbJ=mb.stats.jmp, mbP=mb.stats.pow, mbI=mb.stats.iq, mbSp=mb.stats.spd; if(HasSkill(mb,'step')) mbSp+=10;
   let blkS = 0; let is2 = false;
   if(zone !== 1) {
-    if(HasSkill(mb,'blkskip') && Math.random()<0.1) { 
-    } else if(Math.random() < ((mbSp+mbI)*mbM)/200) {
-      is2 = true; 
-      blkS = (bJ*bM + bP*bM + bI*bM) + (mbJ*mbM + mbP*mbM + mbI*mbM); 
-      blkS /= 1.5;
-    } else {
-      if((mb.hNow||170)+(mbJ*mbM) > 220+(Math.random()*20)) {
-        blkS = (bJ*bM + bP*bM + bI*bM) + ((mbJ+mbP)*mbM*0.7); 
-        blkS /= 1.5; 
-        Log(Pick(LOGS.blk_late_h), "var(--sub)");
-      } else {
-        Log(Pick(LOGS.blk_late), "var(--sub)"); 
-        blkS = (bJ*bM + bP*bM + bI*bM);
-      }
+    if(HasSkill(mb,'blkskip') && Math.random()<0.1) { } 
+    else if(Math.random() < ((mbSp+mbI)*mbM)/200) { is2 = true; blkS = (bJ*bM + bP*bM + bI*bM) + (mbJ*mbM + mbP*mbM + mbI*mbM); blkS /= 1.5; } 
+    else {
+      if((mb.hNow||170)+(mbJ*mbM) > 220+(Math.random()*20)) { blkS = (bJ*bM + bP*bM + bI*bM) + ((mbJ+mbP)*mbM*0.7); blkS /= 1.5; Log(Pick(LOGS.blk_late_h), "var(--sub)"); } 
+      else { Log(Pick(LOGS.blk_late), "var(--sub)"); blkS = (bJ*bM + bP*bM + bI*bM); }
     }
-  } else { 
-    blkS = (mbJ*mbM + mbP*mbM + mbI*mbM); 
-  }
+  } else { blkS = (mbJ*mbM + mbP*mbM + mbI*mbM); }
   
-  // Block Nerf
   blkS += ((blk.hNow||170) - 175) * 1.0; 
-  if(Math.random() < 0.1) { blkS *= 0.9; }
-  
-  if(blkS > enP * 2.5) {
+  if(Math.random() < 0.1) blkS *= 0.9;
+  if(blkS > enP * 2.5) { 
     Log(HasSkill(blk,'mathoa')?LOGS.mathoa[0]:(is2?Pick(LOGS.blk_2):Pick(LOGS.blk)), "var(--ok)", true); 
-    Effect('shake'); 
-    Score(true,false); 
-    return;
-  }
+    Effect('shake'); // Block: Keep shake
+    Score(true,false); return; 
+  } 
   
-  if(HasSkill(blk,'onetouch') || HasSkill(mb,'onetouch')) { 
-    if(blkS > enP*0.8) { enP*=0.5; } 
-  } else if(blkS > enP) { 
-    enP *= 0.65; 
-  } else { 
-    enP -= (blkS * 0.1); 
-  }
+  if(HasSkill(blk,'onetouch') || HasSkill(mb,'onetouch')) { if(blkS > enP*0.8) enP*=0.5; } 
+  else if(blkS > enP) enP *= 0.65; 
+  else enP -= (blkS * 0.1); 
   
-  if(enP<5) { enP=5; }
-
+  if(enP<5) enP=5;
   let pool=[]; [3,4,5].forEach(i=>{pool.push(i); if(G.match.court[i].pos==='L'){pool.push(i);pool.push(i);pool.push(i);}});
   const rec = G.match.court[pool[Math.floor(Math.random()*pool.length)]];
   const rM = GetCondVal(rec);
-  
   let rR=rec.stats.rec, rS=rec.stats.spd, rI=rec.stats.iq;
-  if(HasSkill(rec,'dig')) { rR+=5; rS+=5; rI+=5; }
-  if(HasSkill(rec,'readspk')) { rR+=10; }
-  if(HasSkill(rec,'firststep')) { rS+=5; }
-  if(HasSkill(rec,'flying')) { rS+=3;rR+=3; }
-  if(HasSkill(rec,'reflex')) { rS+=10; }
-  if(HasSkill(rec,'libero') && rec.pos==='L') { rR+=5;rS+=5;rI+=5; }
-  if(HasSkill(rec,'swingarm')) { rR-=5;rS-=5;rI-=5; }
-  if(HasSkill(rec,'immobile')) { rS-=10; }
-  if(HasSkill(rec,'overcut')) { rR+=10; }
-
+  if(HasSkill(rec,'dig')) { rR+=5; rS+=5; rI+=5; } if(HasSkill(rec,'readspk')) rR+=10; if(HasSkill(rec,'firststep')) rS+=5; 
+  if(HasSkill(rec,'flying')) { rS+=3;rR+=3; } if(HasSkill(rec,'reflex')) rS+=10; if(HasSkill(rec,'libero') && rec.pos==='L') { rR+=5;rS+=5;rI+=5; } 
+  if(HasSkill(rec,'swingarm')) { rR-=5;rS-=5;rI-=5; } if(HasSkill(rec,'immobile')) rS-=10; if(HasSkill(rec,'overcut')) rR+=10;
   const recS = (rR+rS+rI)*rM;
-  if(HasSkill(rec,'recskip') && Math.random()<0.05) { 
-    Log(`${rec.name.split(' ')[0]}: さぼった...`, "var(--lose)"); 
-    Score(false,false); 
-    return; 
-  }
-  
+  if(HasSkill(rec,'recskip') && Math.random()<0.05) { Log(`${rec.name.split(' ')[0]}: さぼった...`, "var(--lose)"); Score(false,false); return; }
   const s = [G.match.court[3],G.match.court[4],G.match.court[5],G.match.court[0],G.match.court[1],G.match.court[2]].find(p=>p.pos==='S') || G.match.court[1];
-  if(HasSkill(s,'cover')) { enP -= 5; }
-
+  if(HasSkill(s,'cover')) enP -= 5;
   if(Math.random() < Math.max(0.1, Math.min(0.95, 0.4+(recS-enP)*0.01))) {
-    Log(`${rec.name.split(' ')[0]}: ${Pick(LOGS.rec_nice)}`, "var(--ok)"); 
-    Sound.playSE('recv');
-    Score(true,false);
+    Log(`${rec.name.split(' ')[0]}: ${Pick(LOGS.rec_nice)}`, "var(--ok)"); Sound.playSE('recv'); Score(true,false);
   } else {
-    if(HasSkill(rec,'pancake') && Math.random()<0.05) { 
-      Log(`${rec.name.split(' ')[0]}: ${LOGS.pancake[0]}`, "var(--ok)", true); 
-      Score(true,false); return; 
-    }
-    if(HasSkill(rec,'overcut') && Math.random()<0.05) { 
-      Log(`${rec.name.split(' ')[0]}: 謎オーバーカット！`, "var(--ok)"); 
-      Score(true,false); return; 
-    }
-    Log(`${rec.name.split(' ')[0]}: ${rec.stats.rec<30?Pick(LOGS.rec_pop):Pick(LOGS.rec_fail)}`, "var(--lose)"); 
-    Score(false,false);
+    if(HasSkill(rec,'pancake') && Math.random()<0.05) { Log(`${rec.name.split(' ')[0]}: ${LOGS.pancake[0]}`, "var(--ok)", true); Score(true,false); return; }
+    if(HasSkill(rec,'overcut') && Math.random()<0.05) { Log(`${rec.name.split(' ')[0]}: 謎オーバーカット！`, "var(--ok)"); Score(true,false); return; }
+    Log(`${rec.name.split(' ')[0]}: ${rec.stats.rec<30?Pick(LOGS.rec_pop):Pick(LOGS.rec_fail)}`, "var(--lose)"); Score(false,false);
   }
 }
 
-function Save() { const d = { team: G.team, date: G.date, lv: G.lv, next: G.match.next, winSpr: G.match.winSpr, played: G.match.played, sIds: G.starters.map(p=>p?p.id:null), lId: G.libero?G.libero.id:null, pracMonth: G.pracMonth, scouted: G.scouted, scoutDone: G.scoutDone, isMyServe: G.match.isMyServe }; localStorage.setItem("EIKAN_V68_0_FRIENDLY", JSON.stringify(d)); }
+function Save() { const d = { team: G.team, date: G.date, lv: G.lv, next: G.match.next, winSpr: G.match.winSpr, played: G.match.played, sIds: G.starters.map(p=>p?p.id:null), lId: G.libero?G.libero.id:null, pracMonth: G.pracMonth, scouted: G.scouted, scoutDone: G.scoutDone, isMyServe: G.match.isMyServe }; localStorage.setItem("EIKAN_V69_1_TUNED", JSON.stringify(d)); }
 
 function Log(msg, color, big=false) { 
   const div = document.createElement('div'); div.className = 'l-row' + (big?' log-big':''); 
@@ -2130,208 +1643,92 @@ function Log(msg, color, big=false) {
   const el = document.getElementById('m-log'); el.insertBefore(div, el.firstChild); 
 }
 
+// v69.1 Tuned: Exp Boost & Fix
 function FinishMatch() { 
-  const win = G.match.my > G.match.opp; 
-  Log(`試合終了 ${G.match.my}-${G.match.opp}`, win?"gold":"#ccc", true); 
-  G.match.played = true; 
-  
+  const win = G.match.my > G.match.opp; Log(`試合終了 ${G.match.my}-${G.match.opp}`, win?"gold":"#ccc", true); G.match.played = true; 
   const myP = G.starters.reduce((a,b)=>a+(Object.values(b.stats).reduce((x,y)=>x+y,0)/8),0)/6; 
-  if(win) { 
-    if(G.lv<100) G.lv++; 
-  } else { 
-    if(G.match.pow<myP-10) { G.lv=Math.max(1,G.lv-3); Log("格下に敗北...","var(--lose)"); } 
-    else if(G.match.pow<=myP+10) { G.lv=Math.max(1,G.lv-1); } 
-  } 
+  if(win) { if(G.lv<100) G.lv++; } else { if(G.match.pow<myP-10) {G.lv=Math.max(1,G.lv-3); Log("格下に敗北...","var(--lose)");} else if(G.match.pow<=myP+10) {G.lv=Math.max(1,G.lv-1);} } 
   
+  // v69.1: Nationals Exp Boost (1.2 -> 1.8)
   let sB = 1.0; 
-  if(G.match.name!=="練習試合") sB = G.match.isNat ? 1.5 : 1.2; 
-  const eB = G.match.pow / 50; 
+  if(G.match.name!=="練習試合") sB = G.match.isNat ? 1.8 : 1.2; 
   
+  const eB = G.match.pow / 50; 
   G.team.forEach(p => { 
     if(G.starters.some(s=>s.id===p.id) && Math.random() < 0.1) { 
-      let perf = 0; 
-      if(p.pos==='OH'||p.pos==='MB') perf = p.hist.score*10 - (p.hist.atk - p.hist.score)*2; 
-      else if(p.pos==='S') perf = G.match.my - (HasSkill(p,'dribble')?20:0); 
-      else if(p.pos==='L') perf = (25 - G.match.opp)*2; 
-      
-      const isBad = !win && perf < 10; 
-      const isGood = win || perf > 30; 
-
+      let perf = 0; if(p.pos==='OH'||p.pos==='MB') perf = p.hist.score*10 - (p.hist.atk - p.hist.score)*2; else if(p.pos==='S') perf = G.match.my - (HasSkill(p,'dribble')?20:0); else if(p.pos==='L') perf = (25 - G.match.opp)*2; 
+      const isBad = !win && perf < 10; const isGood = win || perf > 30; 
       if(isGood) { 
         const neg = (p.skills||[]).find(sid => SKILLS.find(k=>k.id===sid).t === 'n'); 
-        if(neg) { 
-          p.skills = p.skills.filter(s => s !== neg); 
-          Log(`${p.name}が弱点を克服！`, "cyan"); 
-        } else { 
-          const cand = SKILLS.filter(k=>k.t==='p' && !(p.skills||[]).includes(k.id)); 
-          if(cand.length>0) { 
-            const newSk = Pick(cand); 
-            if(!p.skills) p.skills=[]; 
-            p.skills.push(newSk.id); 
-            Log(`${p.name}が「${newSk.n}」に覚醒！`, "cyan"); 
-          } 
-        } 
+        if(neg) { p.skills = p.skills.filter(s => s !== neg); Log(`${p.name}が弱点を克服！`, "cyan"); } 
+        else { const cand = SKILLS.filter(k=>k.t==='p' && !(p.skills||[]).includes(k.id)); if(cand.length>0) { const newSk = Pick(cand); if(!p.skills) p.skills=[]; p.skills.push(newSk.id); Log(`${p.name}が「${newSk.n}」に覚醒！`, "cyan"); } } 
       } else if(isBad) { 
-        const cand = SKILLS.filter(k=>k.t==='n' && !(p.skills||[]).includes(k.id)); 
-        if(cand.length>0 && Math.random()<0.3) { 
-          const newSk = Pick(cand); 
-          if(!p.skills) p.skills=[]; 
-          p.skills.push(newSk.id); 
-          Log(`${p.name}が「${newSk.n}」になってしまった...`, "magenta"); 
-        } 
+        const cand = SKILLS.filter(k=>k.t==='n' && !(p.skills||[]).includes(k.id)); if(cand.length>0 && Math.random()<0.3) { const newSk = Pick(cand); if(!p.skills) p.skills=[]; p.skills.push(newSk.id); Log(`${p.name}が「${newSk.n}」になってしまった...`, "magenta"); } 
       } 
     } 
-
-    const isSt = G.starters.some(s=>s&&s.id===p.id); 
-    const m = MENU.find(x=>x.id===p.menu)||MENU[0]; 
-    let bG = 2.0; 
-    let tM = 0.45; 
-    if(m.s.length===1) tM=1.0; 
-    if(m.s.length===2) tM=0.6; 
-    if(m.s.length>=7) tM=0.15; 
-    
+    const isSt = G.starters.some(s=>s&&s.id===p.id); const m = MENU.find(x=>x.id===p.menu)||MENU[0]; 
+    let bG = 2.0; let tM = 0.45; if(m.s.length===1) tM=1.0; if(m.s.length===2) tM=0.6; if(m.s.length>=7) tM=0.15; 
     const part = isSt ? 1.0 : 0.25; 
-    STATS.forEach(s => { 
-      let g = 0.05; 
-      if(m.s.includes(s.id)) g = bG*tM*sB*eB*part; 
-      g *= GetGrowthMod(p.stats[s.id]); 
-      p.stats[s.id] = Math.min(100, p.stats[s.id]+g); 
-    }); 
+    STATS.forEach(s => { let g = 0.05; if(m.s.includes(s.id)) g = bG*tM*sB*eB*part; g *= GetGrowthMod(p.stats[s.id]); p.stats[s.id] = Math.min(100, p.stats[s.id]+g); }); 
   }); 
-  
   Log("部員たちが経験値を獲得しました。", "var(--text)");
   Sound.playSE('whistle');
   document.getElementById('m-end').style.display='block'; 
-  
   if(win) { 
     if(G.match.name!=="練習試合" && G.match.round<5) { 
-      let nm=G.date.m, nd=G.date.d+7; 
-      if(nd>30){nm++; nd-=30;} 
-      if(nm>12)nm=1; 
-      G.match.next = {m:nm, d:nd, name:G.match.name, round:G.match.round+1, isNat:G.match.isNat}; 
-      document.getElementById('btn-next-rd').style.display='block'; 
+      let nm=G.date.m, nd=G.date.d+7; if(nd>30){nm++; nd-=30;} if(nm>12)nm=1; 
+      G.match.next = {m:nm, d:nd, name:G.match.name, round:G.match.round+1, isNat:G.match.isNat}; document.getElementById('btn-next-rd').style.display='block'; 
     } else { 
       if(G.match.name!=="練習試合") { 
-        if(!G.match.isNat && (G.match.name.includes("IH")||G.match.name.includes("春"))) { 
-          let nm=G.date.m, nd=G.date.d+7; 
-          if(nd>30){nm++; nd-=30;} 
-          G.match.next = {m:nm, d:nd, name:G.match.name.replace("予選",""), round:1, isNat:true}; 
-          document.getElementById('btn-next-rd').style.display='block'; 
-          Log("全国へ！","gold",true); 
-        } else { 
-          Log("🏆 優勝！","gold",true); 
-          if(G.match.name.includes("春")) G.match.winSpr=true; 
-          G.match.next=null; 
-        } 
+        if(!G.match.isNat && (G.match.name.includes("IH")||G.match.name.includes("春"))) { let nm=G.date.m, nd=G.date.d+7; if(nd>30){nm++; nd-=30;} G.match.next = {m:nm, d:nd, name:G.match.name.replace("予選",""), round:1, isNat:true}; document.getElementById('btn-next-rd').style.display='block'; Log("全国へ！","gold",true); } 
+        else { Log("🏆 優勝！","gold",true); if(G.match.name.includes("春")) G.match.winSpr=true; G.match.next=null; } 
       } else G.match.next=null; 
     } 
-  } else { 
-    Log("敗退...","#aaa"); 
-    G.match.next=null; 
-  } 
-  
+  } else { Log("敗退...","#aaa"); G.match.next=null; } 
   Save(); 
 }
+function EndMatchUI() { document.getElementById('ui-match').style.display='none'; UpdateUI(); Sound.playBGM('daily'); }
 
-function EndMatchUI() { 
-  document.getElementById('ui-match').style.display='none'; 
-  UpdateUI(); 
-  Sound.playBGM('daily'); 
-}
-
+// v69.0: Show Stats in Order Selection
 function ShowOrder() { 
   tempOrder = [...G.starters]; 
-  const list = document.getElementById('ord-court'); 
-  list.innerHTML = ""; 
-  const mapIdx = [0, 1, 2, 5, 4, 3]; 
-  
+  const list = document.getElementById('ord-court'); list.innerHTML = ""; const mapIdx = [0, 1, 2, 5, 4, 3]; 
   for(let i=0; i<6; i++) { 
-    const idx = mapIdx[i]; 
-    const isBack = i >= 3; 
-    const div = document.createElement('div'); 
-    div.className = "pos-edit" + (isBack ? " back" : ""); 
-    let posLbl = ""; 
-    if(idx===0) posLbl="前左(4)"; 
-    else if(idx===1) posLbl="前中(3)"; 
-    else if(idx===2) posLbl="前右(2)"; 
-    else if(idx===5) posLbl="後左(5)"; 
-    else if(idx===4) posLbl="後中(6)"; 
-    else if(idx===3) posLbl="後右(1)SRV"; 
-    
+    const idx = mapIdx[i]; const isBack = i >= 3; const div = document.createElement('div'); div.className = "pos-edit" + (isBack ? " back" : ""); 
+    let posLbl = ""; if(idx===0) posLbl="前左(4)"; else if(idx===1) posLbl="前中(3)"; else if(idx===2) posLbl="前右(2)"; else if(idx===5) posLbl="後左(5)"; else if(idx===4) posLbl="後中(6)"; else if(idx===3) posLbl="後右(1)SRV"; 
     div.innerHTML = `<label>${posLbl}</label>`; 
     const sel = document.createElement('select'); 
-    sel.innerHTML = `<option value="">---</option>` + G.team.filter(p=>p.pos!=='L').map(p=>`<option value="${p.id}" ${tempOrder[idx]&&tempOrder[idx].id===p.id?'selected':''}>${p.name} (${p.pos})</option>`).join(''); 
-    
-    sel.onchange = function() { 
-      const nid = this.value; 
-      if(nid) { 
-        const dup = tempOrder.findIndex((p, x) => x!==idx && p && p.id===nid); 
-        if(dup !== -1) { 
-          const old = tempOrder[idx]; 
-          tempOrder[idx] = G.team.find(p=>p.id===nid); 
-          tempOrder[dup] = old; 
-          ShowOrder(); 
-          return; 
-        } 
-        tempOrder[idx] = G.team.find(p=>p.id===nid); 
-      } else { 
-        tempOrder[idx] = null; 
-      } 
-    }; 
-    div.appendChild(sel); 
-    list.appendChild(div); 
+    sel.innerHTML = `<option value="">---</option>` + G.team.filter(p=>p.pos!=='L').map(p=>{
+      const tot = Math.floor(Object.values(p.stats).reduce((a,b)=>a+b,0));
+      const condI = COND[p.cond].n;
+      const selStr = (tempOrder[idx]&&tempOrder[idx].id===p.id)?'selected':'';
+      return `<option value="${p.id}" ${selStr}>${p.name} (${p.pos}) ${condI} ★${tot}</option>`;
+    }).join(''); 
+    sel.onchange = function() { const nid = this.value; if(nid) { const dup = tempOrder.findIndex((p, x) => x!==idx && p && p.id===nid); if(dup !== -1) { const old = tempOrder[idx]; tempOrder[idx] = G.team.find(p=>p.id===nid); tempOrder[dup] = old; ShowOrder(); return; } tempOrder[idx] = G.team.find(p=>p.id===nid); } else { tempOrder[idx] = null; } }; div.appendChild(sel); list.appendChild(div); 
   } 
-  
   const lsel = document.getElementById('sel-lib'); 
-  lsel.innerHTML = `<option value="">なし</option>` + G.team.filter(p=>p.pos==='L').map(p => `<option value="${p.id}" ${G.libero&&G.libero.id===p.id?'selected':''}>${p.name}</option>`).join(''); 
+  lsel.innerHTML = `<option value="">なし</option>` + G.team.filter(p=>p.pos==='L').map(p => {
+      const tot = Math.floor(Object.values(p.stats).reduce((a,b)=>a+b,0));
+      return `<option value="${p.id}" ${G.libero&&G.libero.id===p.id?'selected':''}>${p.name} ${COND[p.cond].n} ★${tot}</option>`;
+  }).join(''); 
   document.getElementById('ui-order').style.display='flex'; 
 }
 
-function CommitOrder() { 
-  G.starters = [...tempOrder]; 
-  const lid = document.getElementById('sel-lib').value; 
-  G.libero = lid ? G.team.find(p=>p.id===lid) : null; 
-  document.getElementById('ui-order').style.display='none'; 
-  UpdateUI(); 
-  Save(); 
-}
-
+function CommitOrder() { G.starters = [...tempOrder]; const lid = document.getElementById('sel-lib').value; G.libero = lid ? G.team.find(p=>p.id===lid) : null; document.getElementById('ui-order').style.display='none'; UpdateUI(); Save(); }
 function CloseOrder() { CommitOrder(); }
 
 function Score(isMy, isAtk) {
   if(isMy) { 
-    G.match.my++; 
-    G.match.flow = Math.max(0, G.match.flow) + 1; 
-    Effect('flash'); 
-    
-    if (!G.match.isMyServe) {
-        Rotate();
-        G.match.isMyServe = true;
-    }
+    G.match.my++; G.match.flow = Math.max(0, G.match.flow) + 1; Effect('flash'); 
+    if (!G.match.isMyServe) { Rotate(); G.match.isMyServe = true; }
   } else { 
-    G.match.opp++; 
-    G.match.flow = Math.min(0, G.match.flow) - 1; 
-    G.match.isMyServe = false;
+    G.match.opp++; G.match.flow = Math.min(0, G.match.flow) - 1; G.match.isMyServe = false; 
   }
-  
-  UpdateTOBtn(); 
-  DrawMatch();
-  
-  document.getElementById('s-my').innerText = G.match.my; 
-  document.getElementById('s-opp').innerText = G.match.opp;
-  
+  UpdateTOBtn(); DrawMatch();
+  document.getElementById('s-my').innerText = G.match.my; document.getElementById('s-opp').innerText = G.match.opp;
   if(G.match.my>=25 && G.match.my-G.match.opp>=2) { FinishMatch(); return; }
   if(G.match.opp>=25 && G.match.opp-G.match.my>=2) { FinishMatch(); return; }
-  
-  if (G.match.isMyServe) {
-      if (isMy) { 
-          setTimeout(NextCmd, 800); 
-      } else { 
-          setTimeout(AutoAction, 800);
-      }
-  } else {
-      setTimeout(AutoAction, 800);
-  }
+  if (G.match.isMyServe) { if (isMy) { setTimeout(NextCmd, 800); } else { setTimeout(AutoAction, 800); } } else { setTimeout(AutoAction, 800); }
 }
 </script>
 </body>
